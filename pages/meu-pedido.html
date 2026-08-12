@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acompanhar Pedido — VULTO CLUB</title>
+  <link rel="icon" type="image/png" href="../arquivos/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .track-page{min-height:100vh;padding:8rem 2rem 4rem;background:var(--bg);display:flex;align-items:center;justify-content:center}
+    .track-container{max-width:500px;width:100%;text-align:center}
+    .track-container h1{font-family:var(--font-display);font-size:2.2rem;letter-spacing:.1em;margin-bottom:.5rem}
+    .track-container .sub{color:var(--muted2);font-size:.85rem;margin-bottom:2.5rem}
+    .track-form{display:flex;gap:.5rem;margin-bottom:2rem}
+    .track-form input{flex:1;background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--white);padding:.85rem 1rem;font-family:monospace;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;outline:none;text-align:center}
+    .track-form input:focus{border-color:rgba(255,255,255,.3)}
+    .track-form input::placeholder{color:var(--muted);text-transform:none;font-family:var(--font);font-size:.8rem}
+    .track-form button{background:var(--white);color:#000;border:none;padding:.85rem 1.5rem;font-family:var(--font);font-size:.7rem;font-weight:700;letter-spacing:.12em;cursor:pointer;transition:opacity .2s}
+    .track-form button:hover{opacity:.85}
+    .track-error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;padding:.75rem;font-size:.8rem;margin-bottom:1.5rem;display:none}
+    .track-result{display:none;text-align:left;background:var(--bg2);border:1px solid var(--border);padding:2rem}
+    .track-result h2{font-family:var(--font-display);font-size:1.5rem;letter-spacing:.08em;margin-bottom:.25rem}
+    .track-result .numero{font-family:monospace;font-size:.8rem;color:var(--muted2);margin-bottom:1.5rem}
+    .status-badge{display:inline-block;padding:.3rem .8rem;font-size:.65rem;font-weight:700;letter-spacing:.1em;border-radius:2px;margin-bottom:1.5rem}
+    .status-novo{background:rgba(59,130,246,.15);color:#60a5fa}
+    .status-pago{background:rgba(168,85,247,.15);color:#a855f7}
+    .status-producao{background:rgba(251,191,36,.15);color:#fbbf24}
+    .status-pronto{background:rgba(34,197,94,.15);color:#22c55e}
+    .status-enviado{background:rgba(6,182,212,.15);color:#06b6d4}
+    .status-entregue{background:rgba(148,163,184,.1);color:#94a3b8}
+    /* Timeline */
+    .timeline{position:relative;padding-left:1.5rem;border-left:2px solid var(--border)}
+    .timeline-item{position:relative;padding-bottom:1.25rem}
+    .timeline-item:last-child{padding-bottom:0}
+    .timeline-item::before{content:'';position:absolute;left:-1.6rem;top:.25rem;width:10px;height:10px;border-radius:50%;background:var(--border)}
+    .timeline-item.active::before{background:var(--white);box-shadow:0 0 8px rgba(255,255,255,.3)}
+    .timeline-item .time{font-size:.65rem;color:var(--muted);margin-bottom:.2rem}
+    .timeline-item .note{font-size:.78rem;color:var(--white)}
+    .timeline-item .st{font-size:.62rem;letter-spacing:.1em;color:var(--muted2);text-transform:uppercase;margin-top:.15rem}
+    .rastreio-box{margin-top:1.5rem;padding:1rem;background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.2);display:none}
+    .rastreio-box h4{font-size:.68rem;letter-spacing:.12em;color:#06b6d4;margin-bottom:.4rem}
+    .rastreio-box .code{font-family:monospace;font-size:.9rem;color:var(--white);letter-spacing:.05em}
+    .produto-info{margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+    .produto-info p{font-size:.8rem;color:var(--muted2);line-height:1.6}
+    @media(max-width:600px){.track-page{padding:6rem 1.25rem 3rem;align-items:flex-start}.track-form{flex-direction:column}.track-result{padding:1.5rem}}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-logo"><a href="/"><img src="../arquivos/logo.png" alt="VULTO" class="nav-logo-img" /></a></div>
+    <ul class="nav-links">
+      <li><a href="/">HOME</a></li>
+      <li><a href="/#shop">SHOP</a></li>
+    </ul>
+  </nav>
+
+  <main class="track-page">
+    <div class="track-container">
+      <h1>ACOMPANHAR PEDIDO</h1>
+      <p class="sub">Digite o número do seu pedido para ver o status</p>
+
+      <div class="track-form">
+        <input type="text" id="track-input" placeholder="VLT-XXXXXX" />
+        <button onclick="buscar()">BUSCAR</button>
+      </div>
+      <div class="track-error" id="track-error"></div>
+
+      <div class="track-result" id="track-result">
+        <h2 id="r-title">SEU PEDIDO</h2>
+        <div class="numero" id="r-numero"></div>
+        <div id="r-status-badge"></div>
+        <div class="produto-info" id="r-produto"></div>
+        <div class="rastreio-box" id="r-rastreio"><h4>CÓDIGO DE RASTREIO</h4><div class="code" id="r-rastreio-code"></div></div>
+        <h4 style="font-size:.65rem;letter-spacing:.15em;color:var(--muted);margin:1.5rem 0 1rem;">ATUALIZAÇÕES</h4>
+        <div class="timeline" id="r-timeline"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+  const statusLabels = {novo:'Pedido Recebido',pago:'Pagamento Confirmado',producao:'Em Produção',pronto:'Pronto para Envio',enviado:'Enviado',entregue:'Entregue'};
+
+  async function buscar() {
+    const input = document.getElementById('track-input').value.trim().toUpperCase();
+    const errEl = document.getElementById('track-error');
+    const resEl = document.getElementById('track-result');
+    errEl.style.display = 'none';
+    resEl.style.display = 'none';
+
+    if (!input) { errEl.textContent='Digite o número do pedido'; errEl.style.display='block'; return; }
+
+    try {
+      const r = await fetch('/api/pedidos/consultar?numero=' + encodeURIComponent(input));
+      if (r.status === 404) { errEl.textContent='Pedido não encontrado. Verifique o número.'; errEl.style.display='block'; return; }
+      const data = await r.json();
+      if (data.error) { errEl.textContent=data.error; errEl.style.display='block'; return; }
+
+      // Render result
+      document.getElementById('r-numero').textContent = '#' + data.numero;
+      document.getElementById('r-status-badge').innerHTML = '<span class="status-badge status-'+data.status+'">'+(statusLabels[data.status]||data.status).toUpperCase()+'</span>';
+
+      // Produto
+      const prod = data.produto ? (Array.isArray(data.produto) ? data.produto : [data.produto]) : [];
+      document.getElementById('r-produto').innerHTML = prod.length ? '<p>'+prod.map(p => p.name + (p.size?' ('+p.size+')':'') + ' x'+p.qty).join('<br>')+'</p>' : '';
+
+      // Rastreio
+      const rastreioEl = document.getElementById('r-rastreio');
+      if (data.rastreio) {
+        document.getElementById('r-rastreio-code').textContent = data.rastreio;
+        rastreioEl.style.display = 'block';
+      } else { rastreioEl.style.display = 'none'; }
+
+      // Timeline
+      const hist = data.historico || [];
+      document.getElementById('r-timeline').innerHTML = hist.map((h, i) => `
+        <div class="timeline-item ${i === hist.length-1 ? 'active' : ''}">
+          <div class="time">${new Date(h.data).toLocaleString('pt-BR')}</div>
+          <div class="note">${h.nota || statusLabels[h.status] || h.status}</div>
+          <div class="st">${statusLabels[h.status] || h.status}</div>
+        </div>
+      `).reverse().join('');
+
+      resEl.style.display = 'block';
+    } catch(e) {
+      errEl.textContent = 'Erro de conexão. Tente novamente.';
+      errEl.style.display = 'block';
+    }
+  }
+
+  // Allow Enter key
+  document.getElementById('track-input').addEventListener('keydown', function(e) { if(e.key==='Enter') buscar(); });
+
+  // Check URL param
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('numero')) { document.getElementById('track-input').value = params.get('numero'); buscar(); }
+  </script>
+</body>
+</html>

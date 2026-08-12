@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BT97LRCVKS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BT97LRCVKS');
+  </script>
+  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eventos — VULTO CLUB</title>
+  <link rel="icon" type="image/png" href="arquivos/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/eventos.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <img src="arquivos/logo.png" alt="VULTO CLUB" class="nav-logo-img" />
+    </div>
+    <ul class="nav-links">
+      <li><a href="/">HOME</a></li>
+      <li><a href="/#shop">SHOP</a></li>
+      <li><a href="eventos" class="active">EVENTOS</a></li>
+      <li><a href="/#sobre">SOBRE</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="/" onclick="closeMobileMenu()">HOME</a></li>
+      <li><a href="/#shop" onclick="closeMobileMenu()">SHOP</a></li>
+      <li><a href="eventos" onclick="closeMobileMenu()">EVENTOS</a></li>
+      <li><a href="/#sobre" onclick="closeMobileMenu()">SOBRE</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO EVENTOS -->
+  <section class="eventos-hero">
+    <div class="eventos-hero-content">
+      <p class="hero-tag">ARQUIVO</p>
+      <h1>EVENTOS<br />VULTO CLUB</h1>
+      <p class="hero-sub">Rolês que marcaram. Noites que ninguém esquece.</p>
+    </div>
+  </section>
+
+  <!-- GALERIA -->
+  <section class="galeria">
+    <div class="galeria-grid" id="galeria-grid">
+      <!-- Renderizado via JS -->
+    </div>
+  </section>
+
+  <!-- EVENTOS PASSADOS — INSTAGRAM -->
+  <section style="padding:4rem 2.5rem;text-align:center;border-top:1px solid rgba(255,255,255,0.08);">
+    <p style="font-size:0.65rem;letter-spacing:0.25em;color:#555;margin-bottom:1rem;font-family:monospace;">// ARQUIVO COMPLETO</p>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.08em;margin-bottom:0.75rem;">TODOS OS EVENTOS</h2>
+    <p style="font-size:0.85rem;color:#888;margin-bottom:2rem;max-width:400px;margin-left:auto;margin-right:auto;">Confira o histórico completo dos nossos rolês no Instagram.</p>
+    <a href="https://instagram.com/vulto.club" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:0.75rem;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;padding:1rem 2rem;text-decoration:none;font-size:0.75rem;font-weight:700;letter-spacing:0.15em;border-radius:4px;transition:all 0.2s;">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      VER NO @VULTO.CLUB
+    </a>
+  </section>
+
+  <!-- PRÓXIMOS EVENTOS -->
+  <section class="proximos">
+    <div class="container">
+      <h2>PRÓXIMOS ROLÊS</h2>
+      <div class="proximos-grid" id="proximos-grid">
+        <!-- Renderizado via JS -->
+      </div>
+      <div class="proximos-empty" id="proximos-empty">
+        <p>Nenhum evento agendado no momento. Fique ligado nas redes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <svg class="footer-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M32 2C32 2 22 12 22 32C22 52 32 62 32 62" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M32 2C32 2 42 12 42 32C42 52 32 62 32 62" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="2" y1="32" x2="62" y2="32" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="8" y1="18" x2="56" y2="18" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="8" y1="46" x2="56" y2="46" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <h3>VULTO CLUB</h3>
+        <p>Vista a balaclava. Acelere na madrugada. Faça história sem deixar rastro.</p>
+      </div>
+      <div class="footer-col">
+        <h4>MENU</h4>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/#shop">Shop</a></li>
+          <li><a href="/eventos">Eventos</a></li>
+          <li><a href="/#sobre">Sobre</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>POLÍTICAS</h4>
+        <ul>
+          <li><a href="/pages/politicas/politica-privacidade.html">Política de Privacidade</a></li>
+          <li><a href="/pages/politicas/trocas-devolucoes.html">Trocas e Devoluções</a></li>
+          <li><a href="/pages/politicas/politica-envio.html">Política de Envio</a></li>
+          <li><a href="/pages/politicas/termos-servico.html">Termos de Serviço</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 — VULTO CLUB</span>
+    </div>
+  </footer>
+
+  <!-- MODAL IMAGEM -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <img id="modal-img" src="" alt="" />
+  </div>
+
+  <script src="/js/eventos.js"></script>
+  <script>
+    // Mobile Menu
+    const navToggle = document.getElementById('nav-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+      document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+    });
+
+    function closeMobileMenu() {
+      navToggle.classList.remove('active');
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  </script>
+</body>
+</html>

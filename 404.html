@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BT97LRCVKS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BT97LRCVKS');
+  </script>
+  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — VULTO</title>
+  <link rel="icon" type="image/png" href="arquivos/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #080808;
+      color: #f0f0f0;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .container {
+      text-align: center;
+      max-width: 600px;
+    }
+    .logo {
+      width: 120px;
+      height: auto;
+      margin-bottom: 2rem;
+      opacity: 0.6;
+    }
+    .error-code {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 8rem;
+      letter-spacing: 0.1em;
+      line-height: 1;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #f0f0f0 0%, #666 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 0.9rem;
+      color: #999;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+    }
+    .btn {
+      display: inline-block;
+      background: #f0f0f0;
+      color: #080808;
+      padding: 0.9rem 2rem;
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255,255,255,0.1);
+    }
+    @media (max-width: 600px) {
+      .error-code { font-size: 5rem; }
+      h1 { font-size: 1.5rem; }
+      p { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="arquivos/logo.png" alt="VULTO" class="logo" />
+    <div class="error-code">404</div>
+    <h1>PÁGINA NÃO ENCONTRADA</h1>
+    <p>A página que você está procurando não existe ou foi movida. Volte para a home e continue navegando.</p>
+    <a href="/" class="btn">VOLTAR PARA HOME</a>
+  </div>
+</body>
+</html>

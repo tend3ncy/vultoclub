@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Disallow: /pages/admin/
+Disallow: /pages/mockup.html
+Disallow: /pages/portfolio/admin
+Disallow: /api/
+Disallow: /data/
+Disallow: /backups/
+
+Sitemap: https://vultoclub.com.br/sitemap.xml

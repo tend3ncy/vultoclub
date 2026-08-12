@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#080808"/>
+  <!-- Subtle grid -->
+  <defs>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <!-- Gradient overlay -->
+  <rect width="1200" height="630" fill="url(#grad)" opacity="0.5"/>
+  <defs>
+    <radialGradient id="grad" cx="70%" cy="30%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.04)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+  </defs>
+  <!-- Logo text -->
+  <text x="600" y="260" text-anchor="middle" font-family="Impact, 'Bebas Neue', sans-serif" font-size="140" letter-spacing="15" fill="#f0f0f0">VULTO</text>
+  <!-- Subtitle -->
+  <text x="600" y="330" text-anchor="middle" font-family="'Inter', Arial, sans-serif" font-size="22" letter-spacing="8" fill="#888">STREETWEAR UNDERGROUND</text>
+  <!-- Tagline -->
+  <text x="600" y="420" text-anchor="middle" font-family="'Inter', Arial, sans-serif" font-size="16" letter-spacing="3" fill="#555">QUANDO O SOL SE APAGA, NÓS LIGAMOS.</text>
+  <!-- Bottom line -->
+  <line x1="450" y1="480" x2="750" y2="480" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+  <text x="600" y="520" text-anchor="middle" font-family="'Inter', Arial, sans-serif" font-size="13" letter-spacing="5" fill="#444">VULTOCLUB.COM.BR</text>
+</svg>

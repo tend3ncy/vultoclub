@@ -1,0 +1,29 @@
+# Dados e banco
+data/*.json
+!data/.gitkeep
+db.json
+
+# Uploads
+uploads/**
+!uploads/.gitignore
+!uploads/README.md
+!uploads/portfolio/.gitkeep
+!uploads/mockups/.gitkeep
+
+# Credenciais
+CREDENCIAIS.md
+api/config.php
+
+# Backups e zips
+backups/
+*.zip
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/

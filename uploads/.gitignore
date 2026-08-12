@@ -1,0 +1,4 @@
+# Ignorar todos os uploads
+*
+!.gitignore
+!portfolio/.gitkeep

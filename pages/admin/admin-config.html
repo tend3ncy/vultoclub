@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configurações — VULTO Admin</title>
+  <link rel="icon" type="image/png" href="/arquivos/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body class="admin-body">
+
+  <div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">VULTO</div>
+      <nav class="sidebar-nav">
+        <a href="/gestao" class="sidebar-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Produtos
+        </a>
+        <a href="/gestao/links" class="sidebar-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          Links
+        </a>
+        <a href="/gestao/eventos" class="sidebar-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Eventos
+        </a>
+                        <a href="/gestao/pedidos" class="sidebar-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Pedidos
+        </a>
+        <a href="/gestao/parcerias" class="sidebar-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Parcerias
+        </a>
+        <a href="/gestao/cupons" class="sidebar-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="7.5 4.21 12 6.81 16.5 4.21"/><polyline points="7.5 19.79 7.5 14.6 3 12"/><polyline points="21 12 16.5 14.6 16.5 19.79"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          Cupons
+        </a>
+        <a href="/gestao/config" class="sidebar-link active">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m5.2-13.2l-4.2 4.2m0 6l4.2 4.2M23 12h-6m-6 0H1m18.2 5.2l-4.2-4.2m0-6l4.2-4.2"/></svg>
+          Configurações
+        </a>
+        <a href="/" class="sidebar-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Ver Loja
+        </a>
+        <button class="sidebar-link sidebar-logout" onclick="logout()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sair
+        </button>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="admin-main">
+      <div class="admin-header">
+        <h1>Configurações</h1>
+      </div>
+
+      <div class="config-container">
+        <form id="config-form" onsubmit="saveConfig(event)">
+          
+          <div class="config-section">
+            <h3>Grupo WhatsApp</h3>
+            <p class="config-description">Link do grupo que aparecerá na página bio.html</p>
+            
+            <div class="form-group">
+              <label for="whatsapp-group">Link do Grupo</label>
+              <input 
+                type="url" 
+                id="whatsapp-group" 
+                placeholder="https://chat.whatsapp.com/..." 
+                value=""
+              />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-save" id="btn-save-config">SALVAR CONFIGURAÇÕES</button>
+          </div>
+        </form>
+
+        <div class="config-info">
+          <h4>📱 Página Bio</h4>
+          <p>Acesse: <a href="bio.html" target="_blank">vultoclub.com.br/bio</a></p>
+          <p>Use este link na bio do Instagram</p>
+        </div>
+
+        <!-- RESULTADO VOTAÇÃO -->
+        <div class="config-section" style="margin-top:2rem;">
+          <h3>🗳️ Votação — Próximo Drop</h3>
+          <p class="config-description">Gerencie a votação que aparece na home</p>
+
+          <!-- Toggle ativo -->
+          <div style="margin-top:1.25rem;display:flex;align-items:center;gap:1rem;padding:1rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+            <label style="font-size:0.75rem;color:#ccc;flex:1;">Votação ativa no site</label>
+            <label style="position:relative;width:44px;height:24px;cursor:pointer;">
+              <input type="checkbox" id="vote-active" onchange="saveVoteConfig()" style="opacity:0;width:0;height:0;" />
+              <span style="position:absolute;inset:0;background:rgba(255,255,255,0.1);border-radius:12px;transition:0.3s;"></span>
+              <span id="vote-toggle-dot" style="position:absolute;top:3px;left:3px;width:18px;height:18px;background:#555;border-radius:50%;transition:0.3s;"></span>
+            </label>
+          </div>
+
+          <!-- Nomes dos modelos -->
+          <div style="margin-top:1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+            <div class="form-group">
+              <label>Nome Modelo 1</label>
+              <input type="text" id="vote-name-1" placeholder="MODELO 1" onchange="saveVoteConfig()" />
+            </div>
+            <div class="form-group">
+              <label>Nome Modelo 2</label>
+              <input type="text" id="vote-name-2" placeholder="MODELO 2" onchange="saveVoteConfig()" />
+            </div>
+          </div>
+
+          <!-- Upload imagem -->
+          <div style="margin-top:1.25rem;">
+            <div class="form-group">
+              <label>Imagem da Votação</label>
+            </div>
+            <div style="display:flex;gap:1rem;align-items:center;">
+              <div id="vote-img-preview" style="width:120px;height:80px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                <img id="vote-img-thumb" src="/arquivos/escolha.png" style="max-width:100%;max-height:100%;object-fit:contain;" />
+              </div>
+              <div style="flex:1;">
+                <input type="file" id="vote-img-input" accept="image/*" onchange="uploadVoteImg()" style="display:none;" />
+                <button onclick="document.getElementById('vote-img-input').click()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#ccc;padding:0.6rem 1rem;font-family:var(--font);font-size:0.68rem;letter-spacing:0.1em;cursor:pointer;display:block;width:100%;margin-bottom:0.5rem;">TROCAR IMAGEM</button>
+                <button onclick="removeVoteImg()" style="background:transparent;border:1px solid rgba(255,68,68,0.3);color:#ff4444;padding:0.5rem 1rem;font-family:var(--font);font-size:0.65rem;letter-spacing:0.1em;cursor:pointer;display:block;width:100%;">REMOVER IMAGEM</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Resultados -->
+          <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.08);">
+            <h3 style="font-size:0.7rem;letter-spacing:0.15em;color:#888;margin-bottom:1rem;">RESULTADO</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;">
+              <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);padding:1.5rem;text-align:center;">
+                <div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:0.05em;" id="adm-votes-1">0</div>
+                <div style="font-size:0.7rem;letter-spacing:0.15em;color:#888;margin-top:0.25rem;" id="adm-label-1">MODELO 1</div>
+                <div style="margin-top:0.75rem;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;">
+                  <div id="adm-bar-1" style="height:100%;background:#fff;width:0%;transition:width 0.5s;border-radius:3px;"></div>
+                </div>
+              </div>
+              <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);padding:1.5rem;text-align:center;">
+                <div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:0.05em;" id="adm-votes-2">0</div>
+                <div style="font-size:0.7rem;letter-spacing:0.15em;color:#888;margin-top:0.25rem;" id="adm-label-2">MODELO 2</div>
+                <div style="margin-top:0.75rem;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;">
+                  <div id="adm-bar-2" style="height:100%;background:#fff;width:0%;transition:width 0.5s;border-radius:3px;"></div>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:0.8rem;color:#888;" id="adm-vote-total">Total: 0 votos</span>
+              <button onclick="resetVotacao()" style="background:transparent;border:1px solid rgba(255,68,68,0.3);color:#ff4444;padding:0.5rem 1rem;font-family:var(--font);font-size:0.65rem;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;">RESETAR VOTOS</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Verifica sessão
+    fetch('api/auth').then(r => r.json()).then(d => {
+      if (!d.authenticated) window.location.replace('login.html');
+    });
+    
+    async function logout() {
+      await fetch('api/logout', { method: 'POST' });
+      window.location.replace('login.html');
+    }
+
+    // Carrega configurações
+    async function loadConfig() {
+      try {
+        const response = await fetch('api/settings.php');
+        const data = await response.json();
+        
+        if (data.whatsappGroup) {
+          document.getElementById('whatsapp-group').value = data.whatsappGroup;
+        }
+      } catch (error) {
+        console.error('Erro ao carregar configurações:', error);
+      }
+    }
+
+    // Salva configurações
+    async function saveConfig(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-save-config');
+      btn.disabled = true;
+      btn.textContent = 'SALVANDO...';
+
+      try {
+        const response = await fetch('api/settings.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            whatsappGroup: document.getElementById('whatsapp-group').value.trim()
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          alert('Configurações salvas com sucesso!');
+        } else {
+          alert('Erro ao salvar configurações');
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao salvar configurações');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'SALVAR CONFIGURAÇÕES';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadConfig);
+
+    // ─── VOTAÇÃO ADMIN ──────────────────────────────────────────────────
+    async function loadVotacao() {
+      try {
+        const r = await fetch('/api/votacao');
+        const data = await r.json();
+        const v1 = data.modelo1 || 0;
+        const v2 = data.modelo2 || 0;
+        const total = v1 + v2;
+        document.getElementById('adm-votes-1').textContent = v1;
+        document.getElementById('adm-votes-2').textContent = v2;
+        document.getElementById('adm-vote-total').textContent = 'Total: ' + total + ' votos';
+        const pct1 = total > 0 ? (v1 / total * 100) : 0;
+        const pct2 = total > 0 ? (v2 / total * 100) : 0;
+        document.getElementById('adm-bar-1').style.width = pct1 + '%';
+        document.getElementById('adm-bar-2').style.width = pct2 + '%';
+      } catch(e) {}
+    }
+
+    async function loadVoteConfig() {
+      try {
+        const r = await fetch('/api/votacao/config');
+        const data = await r.json();
+        document.getElementById('vote-active').checked = data.active !== false;
+        updateToggleUI(data.active !== false);
+        document.getElementById('vote-name-1').value = data.name1 || '';
+        document.getElementById('vote-name-2').value = data.name2 || '';
+        if (data.image) document.getElementById('vote-img-thumb').src = data.image;
+        if (data.name1) document.getElementById('adm-label-1').textContent = data.name1;
+        if (data.name2) document.getElementById('adm-label-2').textContent = data.name2;
+      } catch(e) {}
+    }
+
+    function updateToggleUI(active) {
+      const dot = document.getElementById('vote-toggle-dot');
+      const slider = dot.previousElementSibling;
+      if (active) {
+        dot.style.left = '23px';
+        dot.style.background = '#fff';
+        slider.style.background = 'rgba(34,197,94,0.5)';
+      } else {
+        dot.style.left = '3px';
+        dot.style.background = '#555';
+        slider.style.background = 'rgba(255,255,255,0.1)';
+      }
+    }
+
+    async function saveVoteConfig() {
+      const active = document.getElementById('vote-active').checked;
+      updateToggleUI(active);
+      const name1 = document.getElementById('vote-name-1').value.trim();
+      const name2 = document.getElementById('vote-name-2').value.trim();
+      try {
+        await fetch('/api/votacao/config', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ active, name1, name2 })
+        });
+        if (name1) document.getElementById('adm-label-1').textContent = name1;
+        if (name2) document.getElementById('adm-label-2').textContent = name2;
+      } catch(e) {}
+    }
+
+    async function uploadVoteImg() {
+      const input = document.getElementById('vote-img-input');
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        const dataUrl = e.target.result;
+        try {
+          await fetch('/api/votacao/config', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: dataUrl })
+          });
+          document.getElementById('vote-img-thumb').src = dataUrl;
+        } catch(err) { alert('Erro ao enviar imagem'); }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function removeVoteImg() {
+      if (!confirm('Remover a imagem da votação?')) return;
+      try {
+        await fetch('/api/votacao/config', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image: '' })
+        });
+        document.getElementById('vote-img-thumb').src = '';
+      } catch(e) {}
+    }
+
+    async function resetVotacao() {
+      if (!confirm('Resetar todos os votos? Isso não pode ser desfeito.')) return;
+      try {
+        await fetch('/api/votacao/reset', { method: 'POST' });
+        loadVotacao();
+        alert('Votos resetados!');
+      } catch(e) { alert('Erro ao resetar'); }
+    }
+
+    loadVotacao();
+    loadVoteConfig();
+    setInterval(loadVotacao, 10000);
+  </script>
+</body>
+</html>

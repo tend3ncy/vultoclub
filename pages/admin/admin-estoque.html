@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VULTO GESTÃO — Estoque</title>
+  <link rel="icon" type="image/png" href="../../arquivos/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/admin.css" />
+  <style>
+    .page { padding: 2rem; max-width: 900px; margin: 0 auto; }
+    .page h1 { font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 0.1em; margin-bottom: 0.25rem; }
+    .page .sub { color: var(--muted2); font-size: 0.85rem; margin-bottom: 2rem; }
+
+    .estoque-grid { display: grid; gap: 1rem; }
+
+    .estoque-card { background: var(--bg2); border: 1px solid var(--border); padding: 1.5rem; display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; }
+    .estoque-card .info h3 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .estoque-card .info .meta { font-size: 0.72rem; color: var(--muted2); }
+
+    .estoque-badge { display: inline-block; padding: 0.2rem 0.6rem; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; border-radius: 2px; margin-left: 0.5rem; }
+    .estoque-badge.um-prum { background: rgba(251,191,36,0.2); color: #fbbf24; }
+    .estoque-badge.normal { background: rgba(148,163,184,0.15); color: #94a3b8; }
+
+    .estoque-controls { display: flex; align-items: center; gap: 0.75rem; }
+    .qty-display { font-family: var(--font-display); font-size: 2rem; min-width: 60px; text-align: center; letter-spacing: 0.05em; }
+    .qty-display.low { color: #ef4444; }
+    .qty-display.zero { color: #ef4444; opacity: 0.5; }
+
+    .qty-btn { width: 36px; height: 36px; border: 1px solid var(--border); background: transparent; color: var(--white); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .qty-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.3); }
+
+    .btn-save-qty { background: var(--white); color: #000; border: none; padding: 0.5rem 1rem; font-family: var(--font); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; cursor: pointer; transition: opacity 0.2s; }
+    .btn-save-qty:hover { opacity: 0.85; }
+
+    /* Add new item form */
+    .add-form { background: var(--bg2); border: 1px solid var(--border); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .add-form h3 { font-size: 0.72rem; letter-spacing: 0.15em; color: var(--muted2); margin-bottom: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 0.75rem; align-items: end; }
+    .form-group label { display: block; font-size: 0.65rem; letter-spacing: 0.1em; color: var(--muted2); margin-bottom: 0.4rem; }
+    .form-group input, .form-group select {
+      width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      color: var(--white); padding: 0.65rem 0.75rem; font-family: var(--font); font-size: 0.8rem; outline: none;
+    }
+    .form-group input:focus, .form-group select:focus { border-color: rgba(255,255,255,0.3); }
+    .form-group select option { background: var(--bg2); }
+    .btn-add { background: var(--white); color: #000; border: none; padding: 0.65rem 1.25rem; font-family: var(--font); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; cursor: pointer; white-space: nowrap; }
+    .btn-add:hover { opacity: 0.85; }
+
+    .feedback { padding: 0.75rem 1rem; margin-bottom: 1rem; font-size: 0.8rem; border-radius: 2px; display: none; }
+    .feedback.success { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); color: #22c55e; }
+    .feedback.error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; }
+    .feedback.show { display: block; }
+
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr 1fr; }
+      .estoque-card { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-logo"><a href="../../index.html"><img src="../../arquivos/logo.png" alt="VULTO" class="nav-logo-img" /></a></div>
+    <ul class="nav-links">
+      <li><a href="admin.html">PRODUTOS</a></li>
+      <li><a href="admin-estoque.html" class="active">ESTOQUE</a></li>
+      <li><a href="admin-cupons.html">CUPONS</a></li>
+      <li><a href="admin-mockups.html">MOCKUPS</a></li>
+      <li><a href="admin-config.html">CONFIG</a></li>
+    </ul>
+  </nav>
+
+  <div class="page">
+    <h1>ESTOQUE / DROPS</h1>
+    <p class="sub">Controle a quantidade de cada item. Drops 1:1 mostram contador regressivo na loja.</p>
+
+    <div id="feedback" class="feedback"></div>
+
+    <!-- Add form -->
+    <div class="add-form">
+      <h3>ADICIONAR / ATUALIZAR ITEM</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>ID DO PRODUTO</label>
+          <input type="text" id="new-id" placeholder="ex: camiseta-preta-m" />
+        </div>
+        <div class="form-group">
+          <label>NOME</label>
+          <input type="text" id="new-label" placeholder="ex: Camiseta Preta M" />
+        </div>
+        <div class="form-group">
+          <label>TIPO</label>
+          <select id="new-tipo">
+            <option value="normal">Normal</option>
+            <option value="1:1">1:1 (Drop Limitado)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>QUANTIDADE</label>
+          <input type="number" id="new-qty" min="0" value="10" style="width:80px" />
+        </div>
+        <button class="btn-add" onclick="addItem()">SALVAR</button>
+      </div>
+    </div>
+
+    <!-- Estoque list -->
+    <div class="estoque-grid" id="estoque-grid">
+      <p style="color:var(--muted2);font-size:0.85rem;">Carregando...</p>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    let estoque = {};
+
+    async function load() {
+      try {
+        const r = await fetch('/api/estoque');
+        estoque = await r.json();
+        render();
+      } catch(e) {
+        document.getElementById('estoque-grid').innerHTML = '<p style="color:#ef4444">Erro ao carregar</p>';
+      }
+    }
+
+    function render() {
+      const grid = document.getElementById('estoque-grid');
+      const keys = Object.keys(estoque);
+      if (keys.length === 0) {
+        grid.innerHTML = '<p style="color:var(--muted2);font-size:0.85rem;">Nenhum item cadastrado ainda.</p>';
+        return;
+      }
+      grid.innerHTML = keys.map(function(id) {
+        const item = estoque[id];
+        const qtyClass = item.quantidade === 0 ? 'zero' : item.quantidade <= 3 ? 'low' : '';
+        return `
+          <div class="estoque-card" id="card-${id}">
+            <div class="info">
+              <h3>${item.label || id}
+                <span class="estoque-badge ${item.tipo === '1:1' ? 'um-prum' : 'normal'}">
+                  ${item.tipo === '1:1' ? '1:1 DROP' : 'NORMAL'}
+                </span>
+              </h3>
+              <div class="meta">ID: ${id} · Atualizado: ${new Date(item.updatedAt).toLocaleString('pt-BR')}</div>
+            </div>
+            <div class="estoque-controls">
+              <button class="qty-btn" onclick="changeQty('${id}', -1)">−</button>
+              <div class="qty-display ${qtyClass}" id="qty-${id}">${item.quantidade}</div>
+              <button class="qty-btn" onclick="changeQty('${id}', 1)">+</button>
+              <button class="btn-save-qty" onclick="saveQty('${id}')">SALVAR</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.changeQty = function(id, delta) {
+      estoque[id].quantidade = Math.max(0, (estoque[id].quantidade || 0) + delta);
+      const el = document.getElementById('qty-' + id);
+      if (el) {
+        el.textContent = estoque[id].quantidade;
+        el.className = 'qty-display' + (estoque[id].quantidade === 0 ? ' zero' : estoque[id].quantidade <= 3 ? ' low' : '');
+      }
+    };
+
+    window.saveQty = async function(id) {
+      const item = estoque[id];
+      try {
+        const r = await fetch('/api/estoque', {
+          method: 'PUT',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ id, quantidade: item.quantidade, tipo: item.tipo, label: item.label })
+        });
+        const data = await r.json();
+        if (data.success) showFeedback('Estoque atualizado!', 'success');
+        else showFeedback(data.error || 'Erro', 'error');
+      } catch(e) { showFeedback('Erro de conexão', 'error'); }
+    };
+
+    window.addItem = async function() {
+      const id = document.getElementById('new-id').value.trim();
+      const label = document.getElementById('new-label').value.trim();
+      const tipo = document.getElementById('new-tipo').value;
+      const quantidade = parseInt(document.getElementById('new-qty').value) || 0;
+
+      if (!id) { showFeedback('ID obrigatório', 'error'); return; }
+
+      try {
+        const r = await fetch('/api/estoque', {
+          method: 'PUT',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ id, quantidade, tipo, label: label || id })
+        });
+        const data = await r.json();
+        if (data.success) {
+          showFeedback('Item salvo com sucesso!', 'success');
+          document.getElementById('new-id').value = '';
+          document.getElementById('new-label').value = '';
+          document.getElementById('new-qty').value = '10';
+          load();
+        } else showFeedback(data.error || 'Erro', 'error');
+      } catch(e) { showFeedback('Erro de conexão', 'error'); }
+    };
+
+    function showFeedback(msg, type) {
+      const el = document.getElementById('feedback');
+      el.textContent = msg;
+      el.className = 'feedback ' + type + ' show';
+      setTimeout(function() { el.className = 'feedback'; }, 3000);
+    }
+
+    load();
+  })();
+  </script>
+</body>
+</html>

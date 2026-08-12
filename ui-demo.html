@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI Components Demo - Vulto Club</title>
+    <link rel="stylesheet" href="/css/ui-components.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f9fafb;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            color: #111;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+        }
+        .section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #111;
+        }
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .demo-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .demo-btn-primary {
+            background: #3b82f6;
+            color: #fff;
+        }
+        .demo-btn-primary:hover {
+            background: #2563eb;
+        }
+        .demo-btn-danger {
+            background: #ef4444;
+            color: #fff;
+        }
+        .demo-btn-danger:hover {
+            background: #dc2626;
+        }
+        .demo-btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        .demo-btn-secondary:hover {
+            background: #e5e7eb;
+        }
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 UI Components Demo</h1>
+        <p class="subtitle">Teste todos os componentes de interface do sistema</p>
+
+        <!-- TOASTS -->
+        <div class="section">
+            <h2 class="section-title">📢 Toast Notifications</h2>
+            <div class="button-group">
+                <button class="demo-btn demo-btn-primary" onclick="Toast.success('Operação realizada com sucesso!')">
+                    Sucesso
+                </button>
+                <button class="demo-btn demo-btn-danger" onclick="Toast.error('Ocorreu um erro ao processar')">
+                    Erro
+                </button>
+                <button class="demo-btn demo-btn-secondary" onclick="Toast.warning('Atenção! Verifique os dados')">
+                    Aviso
+                </button>
+                <button class="demo-btn demo-btn-secondary" onclick="Toast.info('Informação importante')">
+                    Info
+                </button>
+            </div>
+        </div>
+
+        <!-- LOADING -->
+        <div class="section">
+            <h2 class="section-title">⏳ Loading States</h2>
+            <div class="button-group">
+                <button class="demo-btn demo-btn-primary" onclick="demoLoading()">
+                    Loading Overlay (3s)
+                </button>
+                <button class="demo-btn demo-btn-secondary" id="btn-loading-demo" onclick="demoButtonLoading()">
+                    Loading em Botão (3s)
+                </button>
+            </div>
+        </div>
+
+        <!-- CONFIRMAÇÕES -->
+        <div class="section">
+            <h2 class="section-title">✅ Confirmações</h2>
+            <div class="button-group">
+                <button class="demo-btn demo-btn-danger" onclick="demoConfirmDelete()">
+                    Confirmar Exclusão
+                </button>
+                <button class="demo-btn demo-btn-secondary" onclick="demoConfirmWarning()">
+                    Confirmar Aviso
+                </button>
+                <button class="demo-btn demo-btn-primary" onclick="demoConfirmInfo()">
+                    Confirmar Info
+                </button>
+            </div>
+        </div>
+
+        <!-- PREVIEW DE IMAGEM -->
+        <div class="section">
+            <h2 class="section-title">🖼️ Preview de Imagem</h2>
+            <input type="file" id="image-input" accept="image/*" style="margin-bottom: 16px;">
+            <div id="image-preview-container"></div>
+        </div>
+
+        <!-- EXEMPLO COMPLETO -->
+        <div class="section">
+            <h2 class="section-title">📝 Exemplo Completo</h2>
+            <p style="margin-bottom: 16px; color: #666;">
+                Simula um fluxo completo: validação → loading → confirmação → toast
+            </p>
+            <button class="demo-btn demo-btn-primary" onclick="demoCompleteFlow()">
+                Executar Fluxo Completo
+            </button>
+        </div>
+
+        <!-- CÓDIGO -->
+        <div class="section">
+            <h2 class="section-title">💻 Como Usar</h2>
+            <p style="margin-bottom: 12px;">Inclua os arquivos no seu HTML:</p>
+            <pre style="background: #f3f4f6; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px;"><code>&lt;link rel="stylesheet" href="/css/ui-components.css"&gt;
+&lt;script src="/js/ui-components.js"&gt;&lt;/script&gt;</code></pre>
+            <p style="margin-top: 16px; color: #666;">
+                Veja a documentação completa em <code>docs/UI-COMPONENTS.md</code>
+            </p>
+        </div>
+    </div>
+
+    <script src="/js/ui-components.js"></script>
+    <script>
+        // Demo Loading
+        function demoLoading() {
+            Loading.show('Processando dados...');
+            setTimeout(() => {
+                Loading.hide();
+                Toast.success('Processamento concluído!');
+            }, 3000);
+        }
+
+        // Demo Button Loading
+        function demoButtonLoading() {
+            const btn = document.getElementById('btn-loading-demo');
+            setButtonLoading(btn, true);
+            setTimeout(() => {
+                setButtonLoading(btn, false);
+                Toast.success('Operação concluída!');
+            }, 3000);
+        }
+
+        // Demo Confirm Delete
+        async function demoConfirmDelete() {
+            const confirmed = await Confirm.delete('este item de exemplo');
+            if (confirmed) {
+                Toast.success('Item excluído com sucesso!');
+            } else {
+                Toast.info('Exclusão cancelada');
+            }
+        }
+
+        // Demo Confirm Warning
+        async function demoConfirmWarning() {
+            const confirmed = await Confirm.show({
+                type: 'warning',
+                title: 'Atenção',
+                message: 'Você tem alterações não salvas. Deseja continuar mesmo assim?',
+                confirmText: 'Continuar',
+                cancelText: 'Voltar'
+            });
+            
+            if (confirmed) {
+                Toast.info('Continuando sem salvar...');
+            }
+        }
+
+        // Demo Confirm Info
+        async function demoConfirmInfo() {
+            const confirmed = await Confirm.show({
+                type: 'info',
+                title: 'Confirmar ação',
+                message: 'Deseja prosseguir com esta operação?',
+                confirmText: 'Sim, prosseguir',
+                cancelText: 'Não',
+                confirmClass: 'primary'
+            });
+            
+            if (confirmed) {
+                Toast.success('Ação confirmada!');
+            }
+        }
+
+        // Demo Image Preview
+        document.getElementById('image-input').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                try {
+                    const container = document.getElementById('image-preview-container');
+                    await createImagePreview(file, container);
+                    Toast.success('Preview carregado!');
+                } catch (error) {
+                    Toast.error('Erro ao carregar imagem: ' + error.message);
+                }
+            }
+        });
+
+        // Demo Complete Flow
+        async function demoCompleteFlow() {
+            // 1. Validação
+            Toast.info('Validando dados...');
+            await sleep(1000);
+            
+            // 2. Confirmação
+            const confirmed = await Confirm.show({
+                type: 'info',
+                title: 'Confirmar operação',
+                message: 'Deseja salvar as alterações?',
+                confirmText: 'Salvar',
+                cancelText: 'Cancelar',
+                confirmClass: 'primary'
+            });
+            
+            if (!confirmed) {
+                Toast.info('Operação cancelada');
+                return;
+            }
+            
+            // 3. Loading
+            Loading.show('Salvando alterações...');
+            await sleep(2000);
+            Loading.hide();
+            
+            // 4. Sucesso
+            Toast.success('Alterações salvas com sucesso!');
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+    </script>
+</body>
+</html>

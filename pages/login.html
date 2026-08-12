@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VULTO — Admin</title>
+  <link rel="icon" type="image/png" href="/arquivos/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #060608; color: #f0f0f0; font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .login-box { width: 100%; max-width: 360px; padding: 2rem; }
+    .login-logo { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 0.15em; margin-bottom: 0.25rem; }
+    .login-sub { font-size: 0.72rem; color: #555; letter-spacing: 0.15em; margin-bottom: 2.5rem; }
+    label { display: block; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em; color: #555; margin-bottom: 0.4rem; }
+    input[type="password"] { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #f0f0f0; padding: 0.85rem 1rem; font-family: 'Inter', sans-serif; font-size: 1rem; outline: none; letter-spacing: 0.2em; transition: border-color 0.2s; margin-bottom: 1.25rem; }
+    input[type="password"]:focus { border-color: rgba(255,255,255,0.25); }
+    input[type="password"]::placeholder { letter-spacing: 0.05em; color: #333; }
+    button { width: 100%; background: #f0f0f0; color: #000; border: none; padding: 0.9rem; font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; cursor: pointer; transition: opacity 0.2s; }
+    button:hover { opacity: 0.85; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .error { font-size: 0.72rem; color: #ff5555; letter-spacing: 0.05em; margin-bottom: 1rem; display: none; }
+    .error.show { display: block; }
+    .back-link { display: block; text-align: center; margin-top: 1.5rem; font-size: 0.68rem; color: #444; text-decoration: none; letter-spacing: 0.1em; transition: color 0.2s; }
+    .back-link:hover { color: #888; }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <div class="login-logo">VULTO</div>
+    <p class="login-sub">PAINEL ADMINISTRATIVO</p>
+
+    <form onsubmit="handleLogin(event)">
+      <label for="pwd">SENHA</label>
+      <input type="password" id="pwd" placeholder="Digite sua senha" autofocus />
+      <p class="error" id="error-msg"></p>
+      <button type="submit" id="btn-login">ENTRAR</button>
+    </form>
+
+    <a href="/" class="back-link">← VOLTAR PARA A LOJA</a>
+  </div>
+
+  <script>
+    // Se já tem sessão válida, vai direto pro admin
+    fetch('/api/auth').then(r => r.json()).then(d => {
+      if (d.authenticated) window.location.replace('/gestao');
+    }).catch(() => {});
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-login');
+      const err = document.getElementById('error-msg');
+      const senha = document.getElementById('pwd').value;
+
+      btn.disabled = true;
+      btn.textContent = 'AGUARDE...';
+      err.classList.remove('show');
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ senha }),
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          window.location.replace('/gestao');
+        } else {
+          err.textContent = data.error || 'Senha incorreta.';
+          err.classList.add('show');
+          document.getElementById('pwd').value = '';
+          document.getElementById('pwd').focus();
+          btn.disabled = false;
+          btn.textContent = 'ENTRAR';
+        }
+      } catch {
+        err.textContent = 'Erro de conexão.';
+        err.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = 'ENTRAR';
+      }
+    }
+  </script>
+</body>
+</html>

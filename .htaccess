@@ -1,0 +1,101 @@
+RewriteEngine On
+
+# Força HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Página 404 personalizada
+ErrorDocument 404 /404.html
+
+# Rotas /gestao (admin)
+RewriteRule ^gestao/?$ pages/admin/admin.html [L]
+RewriteRule ^gestao/login$ pages/login.html [L]
+RewriteRule ^gestao/links$ pages/admin/admin-links.html [L]
+RewriteRule ^gestao/eventos$ pages/admin/admin-eventos.html [L]
+RewriteRule ^gestao/cupons$ pages/admin/admin-cupons.html [L]
+RewriteRule ^gestao/config$ pages/admin/admin-config.html [L]
+RewriteRule ^gestao/mockups$ pages/admin/admin-mockups.html [L]
+RewriteRule ^gestao/estoque$ pages/admin/admin-estoque.html [L]
+RewriteRule ^gestao/parcerias$ pages/admin/admin-parcerias.html [L]
+RewriteRule ^gestao/pedidos$ pages/admin/admin-pedidos.html [L]
+RewriteRule ^gestao/editor$ pages/mockup.html [L]
+RewriteRule ^gestao/ascii$ pages/ascii-art.html [L]
+
+# Rotas públicas
+RewriteRule ^meu-pedido$ pages/meu-pedido.html [L]
+
+# Bloqueia /admin antigo
+RewriteRule ^admin(.*)$ - [R=404,L]
+
+# Rotas específicas para páginas
+RewriteRule ^bio$ pages/bio.html [L]
+RewriteRule ^links$ pages/links.html [L]
+RewriteRule ^eventos$ pages/eventos.html [L]
+RewriteRule ^fresh$ pages/fresh.html [L]
+RewriteRule ^freshzito$ freshzito.html [L]
+RewriteRule ^login$ pages/login.html [L]
+RewriteRule ^portfolio/login$ pages/portfolio/login.html [L]
+RewriteRule ^portfolio/admin$ pages/portfolio/admin.html [L]
+RewriteRule ^portfolio/config$ pages/portfolio/admin-config.html [L]
+
+# Remove .html das URLs
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/api/
+RewriteRule ^([^\.]+)$ $1.html [NC,L]
+
+# Redireciona .html para URL limpa
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s([^.]+)\.html [NC]
+RewriteRule ^ %1 [R=301,L]
+
+# Rotas da API
+RewriteRule ^api/login$ api/login.php [L,QSA]
+RewriteRule ^api/logout$ api/logout.php [L,QSA]
+RewriteRule ^api/auth$ api/auth.php [L,QSA]
+RewriteRule ^api/products$ api/products.php [L,QSA]
+RewriteRule ^api/products/([^/]+)$ api/products.php [L,QSA]
+RewriteRule ^api/links$ api/links.php [L,QSA]
+RewriteRule ^api/eventos$ api/eventos.php [L,QSA]
+RewriteRule ^api/settings$ api/settings.php [L,QSA]
+RewriteRule ^api/votacao$ api/votacao.php [L,QSA]
+RewriteRule ^api/votacao/config$ api/votacao.php?action=config [L,QSA]
+RewriteRule ^api/votacao/reset$ api/votacao.php?action=reset [L,QSA]
+RewriteRule ^api/estoque$ api/estoque.php [L,QSA]
+RewriteRule ^api/estoque/compra$ api/estoque.php?action=compra [L,QSA]
+RewriteRule ^api/parcerias$ api/parcerias.php [L,QSA]
+RewriteRule ^api/pedidos$ api/pedidos.php [L,QSA]
+RewriteRule ^api/pedidos/consultar$ api/pedidos.php?action=consultar [L,QSA]
+RewriteRule ^api/pagamento$ api/pagamento.php [L,QSA]
+RewriteRule ^api/frete$ api/frete.php [L,QSA]
+RewriteRule ^api/mockup-orders$ api/mockup-orders.php [L,QSA]
+RewriteRule ^api/portfolio/login$ api/portfolio-login.php [L,QSA]
+RewriteRule ^api/portfolio/auth$ api/portfolio-auth.php [L,QSA]
+RewriteRule ^api/portfolio/logout$ api/portfolio-logout.php [L,QSA]
+RewriteRule ^api/portfolio/projects$ api/portfolio-projects.php [L,QSA]
+RewriteRule ^api/portfolio/projects/([^/]+)$ api/portfolio-projects.php [L,QSA]
+RewriteRule ^api/portfolio/upload$ api/portfolio-upload.php [L,QSA]
+
+# Bloqueia acesso direto a arquivos sensíveis
+<Files "db.json">
+  Order Allow,Deny
+  Deny from all
+</Files>
+
+<FilesMatch "\.(json)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+</FilesMatch>
+
+# Permite acesso ao sitemap e robots
+<Files "sitemap.xml">
+  <IfModule mod_authz_core.c>
+    Require all granted
+  </IfModule>
+</Files>
+<Files "robots.txt">
+  <IfModule mod_authz_core.c>
+    Require all granted
+  </IfModule>
+</Files>
+

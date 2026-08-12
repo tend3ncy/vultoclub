@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BT97LRCVKS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BT97LRCVKS');
+  </script>
+  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="PM1bOoguUN5wHTfSmc2a-xQJYNBJeIO4SP045EqkNHE" />
+  <title>VULTO CLUB — Streetwear Underground</title>
+  <meta name="description" content="Vulto não é marca. É movimento. Streetwear limitado pra quem vive a madrugada. Drops exclusivos, peças 1:1 e camisetas personalizadas." />
+  <meta name="keywords" content="vulto club, streetwear, moda urbana, drops limitados, camiseta personalizada, roupas exclusivas, moda noturna" />
+  <meta name="author" content="Vulto Club" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#080808" />
+
+  <!-- Open Graph (WhatsApp, Instagram, Facebook) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="VULTO CLUB — Streetwear Underground" />
+  <meta property="og:description" content="Quando o sol se apaga, nós ligamos. Drops limitados de streetwear pra quem vive a noite." />
+  <meta property="og:image" content="https://vultoclub.com.br/arquivos/og-banner.svg" />
+  <meta property="og:url" content="https://vultoclub.com.br" />
+  <meta property="og:site_name" content="Vulto Club" />
+  <meta property="og:locale" content="pt_BR" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="VULTO CLUB — Streetwear Underground" />
+  <meta name="twitter:description" content="Drops limitados de streetwear. Peças 1:1. Quem sabe, sabe." />
+  <meta name="twitter:image" content="https://vultoclub.com.br/arquivos/og-banner.svg" />
+
+  <link rel="icon" type="image/png" href="arquivos/logo.png" />
+  <link rel="apple-touch-icon" href="arquivos/logo.png" />
+  <link rel="canonical" href="https://vultoclub.com.br" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- BARRA FRETE GRÁTIS -->
+  <div class="topbar-frete">🚀 FRETE GRÁTIS em pedidos acima de R$ 250</div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <img src="arquivos/logo.png" alt="VULTO CLUB" class="nav-logo-img" />
+    </div>
+    <ul class="nav-links">
+      <li><a href="#home">HOME</a></li>
+      <li><a href="#shop">SHOP</a></li>
+      <li><a href="pages/eventos.html">EVENTOS</a></li>
+      <li><a href="pages/parcerias.html">PARCEIROS</a></li>
+      <li><a href="#sobre">SOBRE</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="#home" onclick="closeMobileMenu()">HOME</a></li>
+      <li><a href="#shop" onclick="closeMobileMenu()">SHOP</a></li>
+      <li><a href="pages/eventos.html" onclick="closeMobileMenu()">EVENTOS</a></li>
+      <li><a href="pages/parcerias.html" onclick="closeMobileMenu()">PARCEIROS</a></li>
+      <li><a href="#sobre" onclick="closeMobileMenu()">SOBRE</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="arquivos/video.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-tag">NOTURNO · VELOZ · INVISÍVEL</p>
+      <h1>QUANDO O SOL<br />SE APAGA,<br />NÓS LIGAMOS.</h1>
+      <p class="hero-sub">Vulto não é marca. É movimento. Quem sabe, sabe.</p>
+      <a href="#shop" class="btn-hero">VER DROPS</a>
+    </div>
+    <div class="hero-scroll-hint">↓</div>
+  </section>
+
+  <!-- COUNTDOWN PRÓXIMO DROP -->
+  <section class="countdown-section" id="countdown-section" style="display:none;">
+    <div class="countdown-inner">
+      <p class="countdown-tag">// PRÓXIMO LANÇAMENTO</p>
+      <h2 class="countdown-title">NOVO DROP EM</h2>
+      <div class="countdown-timer">
+        <div class="countdown-unit"><span class="num" id="cd-days">00</span><span class="label">DIAS</span></div>
+        <div class="countdown-unit"><span class="num" id="cd-hours">00</span><span class="label">HORAS</span></div>
+        <div class="countdown-unit"><span class="num" id="cd-mins">00</span><span class="label">MIN</span></div>
+        <div class="countdown-unit"><span class="num" id="cd-secs">00</span><span class="label">SEG</span></div>
+      </div>
+      <p class="countdown-sub">Fique ligado nas redes pra não perder</p>
+    </div>
+  </section>
+
+  <!-- SHOP -->
+  <section class="featured" id="shop">
+    <div class="featured-header">
+      <h2>COLEÇÃO</h2>
+      <span class="products-count" id="products-count"></span>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filters" id="filters">
+      <button class="filter-btn active" data-cat="todos">TODOS</button>
+    </div>
+
+    <!-- GRID -->
+    <div class="products-grid" id="products-grid">
+      <!-- renderizado via JS -->
+    </div>
+
+    <div class="empty-state" id="empty-state" style="display:none">
+      <p>Nenhum produto cadastrado ainda.</p>
+    </div>
+  </section>
+
+  <!-- VOTAÇÃO PRÓXIMO DROP (popup ao entrar) -->
+  <div class="vote-overlay" id="vote-overlay">
+    <div class="vote-modal">
+      <button class="vote-close" id="vote-close" aria-label="Fechar">✕</button>
+      <p class="vote-tag">// PRÓXIMO DROP</p>
+      <h2 class="vote-title">QUAL MODELO VOCÊ QUER?</h2>
+      <p class="vote-sub">Dois modelos, só um vira realidade. Vote no seu favorito.</p>
+      <div class="vote-img-wrap">
+        <img src="arquivos/escolha.png" alt="Modelo 1 vs Modelo 2" class="vote-img" />
+      </div>
+      <div class="vote-buttons">
+        <button class="vote-btn" id="vote-btn-1" onclick="votar(1)">
+          <span class="vote-number">1</span>
+          <span class="vote-label">MODELO 1</span>
+          <span class="vote-count" id="vote-count-1">—</span>
+        </button>
+        <button class="vote-btn" id="vote-btn-2" onclick="votar(2)">
+          <span class="vote-number">2</span>
+          <span class="vote-label">MODELO 2</span>
+          <span class="vote-count" id="vote-count-2">—</span>
+        </button>
+      </div>
+      <p class="vote-total" id="vote-total"></p>
+    </div>
+  </div>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto" id="sobre">
+    <div class="manifesto-inner">
+      <p class="manifesto-label">// manifesto</p>
+      <blockquote>
+        "Não fazemos barulho. Não pedimos licença. A rua é nossa depois da meia-noite. Se você precisa perguntar, você não faz parte."
+      </blockquote>
+      <p class="manifesto-name">— VULTO CLUB</p>
+    </div>
+  </section>
+
+  <!-- BENEFÍCIOS -->
+  <section class="benefits">
+    <div class="benefit">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      <h4>FRETE GRÁTIS</h4>
+      <p>Em pedidos acima de R$250</p>
+    </div>
+    <div class="benefit">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <h4>ENTREGA EXPRESSA</h4>
+      <p>2 a 7 dias úteis após o envio</p>
+    </div>
+    <div class="benefit">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <h4>SATISFAÇÃO GARANTIDA</h4>
+      <p>30 dias de garantia em todos os produtos</p>
+    </div>
+    <div class="benefit">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <h4>PIX COM DESCONTO</h4>
+      <p>5% OFF em pagamentos no Pix</p>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter">
+    <div class="newsletter-inner">
+      <p class="newsletter-tag">CREW EXCLUSIVA</p>
+      <h2>ENTRE PRO BONDE</h2>
+      <p>Drops em primeira mão. Eventos secretos. Sem spam, só o necessário.</p>
+      <a href="https://chat.whatsapp.com/BAyVuSfarcPBGPTnBzfLcb" target="_blank" class="btn-whatsapp">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </svg>
+        ENTRAR NO GRUPO DO WHATSAPP
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <svg class="footer-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M32 2C32 2 22 12 22 32C22 52 32 62 32 62" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M32 2C32 2 42 12 42 32C42 52 32 62 32 62" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="2" y1="32" x2="62" y2="32" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="8" y1="18" x2="56" y2="18" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="8" y1="46" x2="56" y2="46" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <h3>VULTO CLUB</h3>
+        <p>Vista a balaclava. Acelere na madrugada. Faça história sem deixar rastro.</p>
+      </div>
+      <div class="footer-col">
+        <h4>MENU</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#shop">Shop</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="/meu-pedido">Meu Pedido</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>POLÍTICAS</h4>
+        <ul>
+          <li><a href="/pages/politicas/politica-privacidade.html">Política de Privacidade</a></li>
+          <li><a href="/pages/politicas/trocas-devolucoes.html">Trocas e Devoluções</a></li>
+          <li><a href="/pages/politicas/politica-envio.html">Política de Envio</a></li>
+          <li><a href="/pages/politicas/termos-servico.html">Termos de Serviço</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 — VULTO</span>
+    </div>
+  </footer>
+
+  <!-- MODAL PRODUTO -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-img" id="modal-img"></div>
+      <div class="modal-body">
+        <span class="modal-cat" id="modal-cat"></span>
+        <h2 class="modal-title" id="modal-title"></h2>
+        <p class="modal-desc" id="modal-desc"></p>
+        <div class="size-selector" id="size-selector" style="display:none">
+          <label>TAMANHO:</label>
+          <div class="size-options">
+            <button class="size-btn" data-size="PP">PP</button>
+            <button class="size-btn" data-size="P">P</button>
+            <button class="size-btn" data-size="M">M</button>
+            <button class="size-btn" data-size="G">G</button>
+            <button class="size-btn" data-size="GG">GG</button>
+            <button class="size-btn" data-size="XG">XG</button>
+          </div>
+        </div>
+        <span class="modal-price" id="modal-price"></span>
+        <div style="display:flex;gap:0.75rem;margin-top:1.5rem;">
+          <button class="btn-add-cart" onclick="addToCart()" style="flex:1">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+            ADICIONAR AO CARRINHO
+          </button>
+          <button class="btn-whatsapp-buy" onclick="buyProduct()" style="flex:1;background:#fff;color:#000;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+            </svg>
+            COMPRAR AGORA
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PAGAMENTO MERCADO PAGO -->
+  <div class="modal-overlay" id="payment-data-overlay" onclick="closePaymentData()">
+    <div class="cart-modal" onclick="event.stopPropagation()" style="max-width: 600px; max-height: 90vh; overflow-y: auto;">
+      <div class="cart-header">
+        <h2>FINALIZAR PAGAMENTO</h2>
+        <button class="modal-close" onclick="closePaymentData()">✕</button>
+      </div>
+      <div style="padding: 2rem">
+        <div id="payment-brick-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARRINHO FLUTUANTE -->
+  <button class="cart-float" id="cart-float" onclick="openCart()" style="display:none">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+    </svg>
+    <span class="cart-count" id="cart-count">0</span>
+  </button>
+
+  <!-- MODAL CARRINHO -->
+  <div class="modal-overlay" id="cart-overlay" onclick="closeCart()">
+    <div class="cart-modal" onclick="event.stopPropagation()">
+      <div class="cart-header">
+        <h2>MEU CARRINHO</h2>
+        <button class="modal-close" onclick="closeCart()">✕</button>
+      </div>
+      <div class="cart-body" id="cart-body">
+        <p class="cart-empty">Seu carrinho está vazio</p>
+      </div>
+      <div class="cart-footer" id="cart-footer" style="display:none">
+        <div class="coupon-input">
+          <input type="text" id="coupon-code" placeholder="Código do cupom" />
+          <button onclick="applyCoupon()">APLICAR</button>
+        </div>
+        <div id="coupon-message" style="display:none"></div>
+        <div class="cart-subtotal">
+          <span>SUBTOTAL:</span>
+          <span id="cart-subtotal">R$ 0,00</span>
+        </div>
+        <div class="cart-discount" id="cart-discount" style="display:none">
+          <span>DESCONTO:</span>
+          <span id="discount-value">- R$ 0,00</span>
+        </div>
+        <div class="cart-total">
+          <span>TOTAL:</span>
+          <span id="cart-total">R$ 0,00</span>
+        </div>
+        <button class="btn-checkout btn-whatsapp" onclick="checkout()">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          FINALIZAR PEDIDO
+        </button>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- BOTÃO FLUTUANTE WHATSAPP -->
+  <a href="https://wa.me/5511992249469?text=Oi!%20Vim%20pelo%20site%20da%20Vulto%20Club" target="_blank" class="whatsapp-float" aria-label="WhatsApp">
+    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  </a>
+
+  <script src="js/estoque.js"></script>
+  <script src="js/mp-config.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    function handleNewsletter(e) {
+      e.preventDefault();
+      e.target.reset();
+      alert('Inscrito com sucesso!');
+    }
+  </script>
+
+  <script>
+    // ─── VOTAÇÃO (popup overlay) ────────────────────────────────────────────
+    let _voted = localStorage.getItem('vulto_voto');
+    const _voteOverlay = document.getElementById('vote-overlay');
+
+    // Esconde até carregar config
+    _voteOverlay.classList.add('hidden');
+
+    // Fechar popup
+    document.getElementById('vote-close').addEventListener('click', function() {
+      _voteOverlay.classList.add('hidden');
+    });
+
+    async function loadVoteConfig() {
+      try {
+        const r = await fetch('/api/votacao/config');
+        const cfg = await r.json();
+
+        // Se não tá ativa ou já votou, não mostra
+        if (!cfg.active || _voted) {
+          _voteOverlay.classList.add('hidden');
+          return;
+        }
+
+        // Aplica config
+        if (cfg.image) document.querySelector('.vote-img').src = cfg.image;
+        if (cfg.name1) {
+          document.querySelector('#vote-btn-1 .vote-label').textContent = cfg.name1;
+        }
+        if (cfg.name2) {
+          document.querySelector('#vote-btn-2 .vote-label').textContent = cfg.name2;
+        }
+
+        // Mostra o popup
+        _voteOverlay.classList.remove('hidden');
+      } catch(e) {
+        // Fallback: mostra se não votou
+        if (!_voted) _voteOverlay.classList.remove('hidden');
+      }
+    }
+
+    async function loadVotos() {
+      try {
+        const r = await fetch('/api/votacao');
+        const data = await r.json();
+        showVotos(data.modelo1 || 0, data.modelo2 || 0);
+      } catch(e) {}
+    }
+
+    function showVotos(v1, v2) {
+      const total = v1 + v2;
+      document.getElementById('vote-count-1').textContent = v1 + ' votos';
+      document.getElementById('vote-count-2').textContent = v2 + ' votos';
+      document.getElementById('vote-total').textContent = total > 0 ? total + ' votos no total' : '';
+      if (_voted) {
+        document.getElementById('vote-btn-' + _voted).classList.add('voted');
+      }
+    }
+
+    async function votar(modelo) {
+      if (_voted) { alert('Você já votou!'); return; }
+      try {
+        const r = await fetch('/api/votacao', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ modelo })
+        });
+        const data = await r.json();
+        if (data.success) {
+          _voted = modelo;
+          localStorage.setItem('vulto_voto', modelo);
+          showVotos(data.modelo1, data.modelo2);
+          // Analytics
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'vote_drop', { modelo: modelo, total_1: data.modelo1, total_2: data.modelo2 });
+          }
+          setTimeout(function() { _voteOverlay.classList.add('hidden'); }, 1500);
+        } else if (data.error === 'Você já votou!') {
+          _voted = data.votou;
+          localStorage.setItem('vulto_voto', data.votou);
+          loadVotos();
+          setTimeout(function() { _voteOverlay.classList.add('hidden'); }, 1000);
+        } else {
+          alert(data.error || 'Erro ao votar');
+        }
+      } catch(e) { alert('Erro de conexão'); }
+    }
+
+    loadVoteConfig();
+    loadVotos();
+  </script>
+
+  <script>
+    // ─── COUNTDOWN PRÓXIMO DROP ─────────────────────────────────────────────
+    // Altere a data do próximo drop aqui:
+    const NEXT_DROP = new Date('2026-09-01T00:00:00-03:00'); // 1 de setembro 2026
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = NEXT_DROP - now;
+      const section = document.getElementById('countdown-section');
+
+      if (diff <= 0) { section.style.display = 'none'; return; }
+      section.style.display = 'block';
+
+      const days = Math.floor(diff / (1000*60*60*24));
+      const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+      const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+      const secs = Math.floor((diff % (1000*60)) / 1000);
+
+      document.getElementById('cd-days').textContent = String(days).padStart(2,'0');
+      document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+      document.getElementById('cd-mins').textContent = String(mins).padStart(2,'0');
+      document.getElementById('cd-secs').textContent = String(secs).padStart(2,'0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+
+  <script>
+    // Mobile Menu
+    const navToggle = document.getElementById('nav-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+      document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+    });
+
+    function closeMobileMenu() {
+      navToggle.classList.remove('active');
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  </script>
+</body>
+</html>

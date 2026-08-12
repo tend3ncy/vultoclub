@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BT97LRCVKS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BT97LRCVKS');
+  </script>
+  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VULTO — Links</title>
+  <link rel="icon" type="image/png" href="/arquivos/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #080808;
+      color: #f0f0f0;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 20%, rgba(255,255,255,0.03) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .container {
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      z-index: 1;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.5rem;
+      color: #f0f0f0;
+    }
+    .bio {
+      font-size: 0.85rem;
+      color: #888;
+      line-height: 1.6;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #f0f0f0;
+      padding: 1rem 1.5rem;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .link-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.3s;
+    }
+    .link-btn:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+    .link-btn:hover::before {
+      transform: translateX(100%);
+    }
+    .link-btn.featured {
+      background: #f0f0f0;
+      color: #000;
+      border-color: #f0f0f0;
+      font-weight: 700;
+    }
+    .link-btn.featured:hover {
+      background: #fff;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(255,255,255,0.15);
+    }
+    .link-icon {
+      font-size: 1.2rem;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-text {
+      font-size: 0.7rem;
+      color: #444;
+      letter-spacing: 0.1em;
+    }
+    .admin-btn {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      text-decoration: none;
+      transition: all 0.2s;
+      z-index: 10;
+    }
+    .admin-btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: #f0f0f0;
+      transform: scale(1.1);
+    }
+    .loading {
+      text-align: center;
+      color: #444;
+      font-size: 0.85rem;
+      padding: 3rem 0;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .link-btn {
+      animation: fadeIn 0.4s ease backwards;
+    }
+    .link-btn:nth-child(1) { animation-delay: 0.05s; }
+    .link-btn:nth-child(2) { animation-delay: 0.1s; }
+    .link-btn:nth-child(3) { animation-delay: 0.15s; }
+    .link-btn:nth-child(4) { animation-delay: 0.2s; }
+    .link-btn:nth-child(5) { animation-delay: 0.25s; }
+    .link-btn:nth-child(6) { animation-delay: 0.3s; }
+    .link-btn:nth-child(7) { animation-delay: 0.35s; }
+    .link-btn:nth-child(8) { animation-delay: 0.4s; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">VULTO</div>
+      <p class="bio" id="bio">Underground, ágeis e invisíveis. Seguimos nossas próprias regras.</p>
+    </div>
+
+    <div class="links" id="links">
+      <div class="loading">Carregando...</div>
+    </div>
+
+    <div class="footer">
+      <p class="footer-text">© 2026 — VULTO</p>
+    </div>
+  </div>
+
+  <script>
+    async function loadLinks() {
+      try {
+        const res = await fetch('/api/links');
+        const data = await res.json();
+        
+        const linksEl = document.getElementById('links');
+        const bioEl = document.getElementById('bio');
+
+        if (data.bio) bioEl.textContent = data.bio;
+
+        if (!data.links || data.links.length === 0) {
+          linksEl.innerHTML = '<div class="loading">Nenhum link cadastrado ainda.</div>';
+          return;
+        }
+
+        linksEl.innerHTML = data.links
+          .filter(l => l.active)
+          .map(l => `
+            <a href="${escHtml(l.url)}" class="link-btn ${l.featured ? 'featured' : ''}" target="_blank" rel="noopener">
+              ${l.icon ? `<span class="link-icon">${l.icon}</span>` : ''}
+              <span>${escHtml(l.title)}</span>
+            </a>
+          `).join('');
+      } catch {
+        document.getElementById('links').innerHTML = '<div class="loading">Erro ao carregar links.</div>';
+      }
+    }
+
+    function escHtml(str) {
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    loadLinks();
+  </script>
+</body>
+</html>

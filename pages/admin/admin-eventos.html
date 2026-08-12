@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VULTO — Admin Eventos</title>
+  <link rel="icon" type="image/png" href="/arquivos/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body class="admin-body">
+
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">VULTO</div>
+      <nav class="sidebar-nav">
+        <a href="/gestao" class="sidebar-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Produtos
+        </a>
+        <a href="/gestao/links" class="sidebar-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          Links
+        </a>
+        <a href="/gestao/eventos" class="sidebar-link active">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Eventos
+        </a>
+                        <a href="/gestao/pedidos" class="sidebar-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Pedidos
+        </a>
+        <a href="/gestao/parcerias" class="sidebar-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Parcerias
+        </a>
+        <a href="/gestao/cupons" class="sidebar-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="7.5 4.21 12 6.81 16.5 4.21"/><polyline points="7.5 19.79 7.5 14.6 3 12"/><polyline points="21 12 16.5 14.6 16.5 19.79"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          Cupons
+        </a>
+        <a href="/gestao/config" class="sidebar-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m5.2-13.2l-4.2 4.2m0 6l4.2 4.2M23 12h-6m-6 0H1m18.2 5.2l-4.2-4.2m0-6l4.2-4.2"/></svg>
+          Configurações
+        </a>
+        <a href="/" class="sidebar-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Ver Loja
+        </a>
+        <button class="sidebar-link sidebar-logout" onclick="logout()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sair
+        </button>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+      <div class="admin-header">
+        <h1>Eventos</h1>
+        <a href="/eventos.html" target="_blank" class="btn-add" style="background:rgba(255,255,255,0.08);color:#f0f0f0">VER PÁGINA</a>
+      </div>
+
+      <form id="eventos-form" onsubmit="saveEventos(event)">
+        
+        <!-- EVENTOS PASSADOS -->
+        <h2 style="font-family:'Bebas Neue';font-size:1.5rem;margin-bottom:1.5rem;letter-spacing:0.05em">EVENTOS PASSADOS</h2>
+        <div class="eventos-list" id="passados-list"></div>
+        <button type="button" class="btn-add-link" onclick="addEvento('passados')">+ ADICIONAR EVENTO PASSADO</button>
+
+        <!-- PRÓXIMOS EVENTOS -->
+        <h2 style="font-family:'Bebas Neue';font-size:1.5rem;margin:3rem 0 1.5rem;letter-spacing:0.05em">PRÓXIMOS EVENTOS</h2>
+        <div class="eventos-list" id="proximos-list"></div>
+        <button type="button" class="btn-add-link" onclick="addEvento('proximos')">+ ADICIONAR PRÓXIMO EVENTO</button>
+
+        <div class="form-actions" style="margin-top:2rem">
+          <button type="submit" class="btn-save">SALVAR ALTERAÇÕES</button>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    fetch('api/auth').then(r => r.json()).then(d => {
+      if (!d.authenticated) window.location.replace('login.html');
+    });
+    async function logout() {
+      await fetch('api/logout', { method: 'POST' });
+      window.location.replace('login.html');
+    }
+
+    let eventosData = { passados: [], proximos: [] };
+
+    async function loadEventos() {
+      const res = await fetch('api/eventos');
+      eventosData = await res.json();
+      renderEventos();
+    }
+
+    function renderEventos() {
+      renderPassados();
+      renderProximos();
+    }
+
+    function renderPassados() {
+      const list = document.getElementById('passados-list');
+      list.innerHTML = eventosData.passados.map((e, i) => `
+        <div class="evento-item">
+          <div class="link-item-header">
+            <span class="link-item-num">#${i + 1}</span>
+            <button type="button" class="btn-remove" onclick="removeEvento('passados', ${i})">✕</button>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Título</label>
+              <input type="text" value="${escHtml(e.titulo)}" onchange="updateEvento('passados', ${i}, 'titulo', this.value)" placeholder="Ex: MEET #01" />
+            </div>
+            <div class="form-group">
+              <label>Data</label>
+              <input type="text" value="${escHtml(e.data)}" onchange="updateEvento('passados', ${i}, 'data', this.value)" placeholder="Ex: DEZ 2025" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>URL da Imagem</label>
+            <input type="url" value="${escHtml(e.img)}" onchange="updateEvento('passados', ${i}, 'img', this.value)" placeholder="arquivos/eventos/evento1.jpg" />
+          </div>
+          <div class="form-group">
+            <label>Link (Instagram, YouTube, etc)</label>
+            <input type="url" value="${escHtml(e.link || '')}" onchange="updateEvento('passados', ${i}, 'link', this.value)" placeholder="https://instagram.com/p/..." />
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderProximos() {
+      const list = document.getElementById('proximos-list');
+      list.innerHTML = eventosData.proximos.map((e, i) => `
+        <div class="evento-item">
+          <div class="link-item-header">
+            <span class="link-item-num">#${i + 1}</span>
+            <button type="button" class="btn-remove" onclick="removeEvento('proximos', ${i})">✕</button>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Título</label>
+              <input type="text" value="${escHtml(e.titulo)}" onchange="updateEvento('proximos', ${i}, 'titulo', this.value)" placeholder="Ex: MEET #02" />
+            </div>
+            <div class="form-group">
+              <label>Data</label>
+              <input type="text" value="${escHtml(e.data)}" onchange="updateEvento('proximos', ${i}, 'data', this.value)" placeholder="Ex: 15 FEV" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Local</label>
+            <input type="text" value="${escHtml(e.local)}" onchange="updateEvento('proximos', ${i}, 'local', this.value)" placeholder="Ex: São Paulo - SP" />
+          </div>
+          <div class="form-group">
+            <label>Descrição</label>
+            <textarea rows="2" onchange="updateEvento('proximos', ${i}, 'desc', this.value)" placeholder="Descreva o evento...">${escHtml(e.desc)}</textarea>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addEvento(tipo) {
+      if (tipo === 'passados') {
+        eventosData.passados.push({ titulo: '', data: '', img: '' });
+      } else {
+        eventosData.proximos.push({ titulo: '', data: '', local: '', desc: '' });
+      }
+      renderEventos();
+    }
+
+    function removeEvento(tipo, i) {
+      eventosData[tipo].splice(i, 1);
+      renderEventos();
+    }
+
+    function updateEvento(tipo, i, field, value) {
+      eventosData[tipo][i][field] = value;
+    }
+
+    async function saveEventos(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('.btn-save');
+      btn.disabled = true;
+      btn.textContent = 'SALVANDO...';
+
+      await fetch('api/eventos', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(eventosData),
+      });
+
+      btn.textContent = 'SALVO ✓';
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = 'SALVAR ALTERAÇÕES';
+      }, 1500);
+    }
+
+    function escHtml(str) {
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    loadEventos();
+  </script>
+
+  <style>
+    .eventos-list { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .evento-item {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 1.5rem;
+      border-radius: 8px;
+    }
+  </style>
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VULTO ADMIN — Pedidos Mockup</title>
+  <link rel="icon" type="image/png" href="../../arquivos/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/admin.css" />
+  <style>
+    .admin-mockups { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+    .admin-mockups h1 { font-family: var(--font-display); font-size: 2.5rem; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+    .admin-mockups .subtitle { color: var(--muted2); font-size: 0.85rem; margin-bottom: 2rem; }
+    
+    .orders-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: var(--bg2); border: 1px solid var(--border); padding: 1.5rem; }
+    .stat-card .number { font-family: var(--font-display); font-size: 2rem; letter-spacing: 0.05em; }
+    .stat-card .label { font-size: 0.7rem; letter-spacing: 0.15em; color: var(--muted2); margin-top: 0.25rem; }
+    
+    .orders-filters { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .orders-filters button { background: transparent; border: 1px solid var(--border); color: var(--muted2); padding: 0.5rem 1rem; font-family: var(--font); font-size: 0.7rem; letter-spacing: 0.12em; cursor: pointer; transition: all 0.2s; }
+    .orders-filters button:hover, .orders-filters button.active { background: var(--white); color: #000; border-color: var(--white); }
+    
+    .orders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1rem; }
+    
+    .order-card { background: var(--bg2); border: 1px solid var(--border); overflow: hidden; transition: border-color 0.2s; }
+    .order-card:hover { border-color: rgba(255,255,255,0.2); }
+    .order-card-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); }
+    .order-card-header .order-id { font-family: monospace; font-size: 0.8rem; color: var(--white); letter-spacing: 0.08em; }
+    .order-card-header .order-date { font-size: 0.7rem; color: var(--muted); }
+    
+    .order-status { display: inline-block; padding: 0.2rem 0.6rem; font-size: 0.6rem; letter-spacing: 0.1em; font-weight: 700; border-radius: 2px; }
+    .order-status.novo { background: rgba(59,130,246,0.2); color: #60a5fa; }
+    .order-status.producao { background: rgba(251,191,36,0.2); color: #fbbf24; }
+    .order-status.enviado { background: rgba(34,197,94,0.2); color: #22c55e; }
+    .order-status.cancelado { background: rgba(239,68,68,0.2); color: #ef4444; }
+    
+    .order-card-body { padding: 1.25rem; }
+    .order-preview { width: 100%; aspect-ratio: 4/3; background: var(--bg3); margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .order-preview img { width: 100%; height: 100%; object-fit: contain; }
+    .order-preview .no-preview { font-size: 0.75rem; color: var(--muted); }
+    
+    .order-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1rem; }
+    .order-spec { padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border); }
+    .order-spec .spec-label { font-size: 0.6rem; letter-spacing: 0.12em; color: var(--muted); display: block; margin-bottom: 0.15rem; }
+    .order-spec .spec-value { font-size: 0.78rem; color: var(--white); }
+    
+    .order-customer { padding: 0.75rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border); margin-bottom: 1rem; }
+    .order-customer p { font-size: 0.78rem; color: var(--white); margin-bottom: 0.2rem; }
+    .order-customer span { font-size: 0.7rem; color: var(--muted2); }
+    
+    .order-card-actions { display: flex; gap: 0.5rem; padding: 1rem 1.25rem; border-top: 1px solid var(--border); }
+    .order-card-actions button { flex: 1; padding: 0.6rem; font-family: var(--font); font-size: 0.65rem; letter-spacing: 0.1em; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--muted2); transition: all 0.2s; }
+    .order-card-actions button:hover { border-color: var(--white); color: var(--white); }
+    .order-card-actions .btn-production { background: rgba(251,191,36,0.1); border-color: rgba(251,191,36,0.3); color: #fbbf24; }
+    .order-card-actions .btn-production:hover { background: rgba(251,191,36,0.2); }
+    .order-card-actions .btn-done { background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.3); color: #22c55e; }
+    .order-card-actions .btn-done:hover { background: rgba(34,197,94,0.2); }
+    
+    .empty-orders { text-align: center; padding: 5rem 2rem; color: var(--muted2); }
+    .empty-orders h3 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--white); }
+    
+    /* Order Detail Modal */
+    .detail-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 300; padding: 1rem; }
+    .detail-overlay.open { display: flex; }
+    .detail-modal { background: var(--bg2); border: 1px solid var(--border); max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; }
+    .detail-header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); }
+    .detail-header h2 { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.08em; }
+    .detail-close { background: none; border: none; color: var(--muted2); font-size: 1.5rem; cursor: pointer; }
+    .detail-body { padding: 2rem; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .detail-preview { background: var(--bg3); padding: 1rem; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
+    .detail-preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .detail-info h3 { font-size: 0.7rem; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 0.75rem; margin-top: 1.5rem; }
+    .detail-info h3:first-child { margin-top: 0; }
+    .detail-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+    .detail-row .label { font-size: 0.78rem; color: var(--muted2); }
+    .detail-row .value { font-size: 0.78rem; color: var(--white); font-weight: 500; }
+    .detail-actions { display: flex; gap: 1rem; padding: 1.5rem 2rem; border-top: 1px solid var(--border); }
+    .detail-actions button { flex: 1; padding: 0.85rem; font-family: var(--font); font-size: 0.7rem; letter-spacing: 0.12em; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; }
+    .btn-whatsapp-order { background: #25D366; color: #fff; }
+    .btn-whatsapp-order:hover { background: #20BA5A; }
+    .btn-download-art { background: var(--white); color: #000; }
+    .btn-download-art:hover { opacity: 0.9; }
+    
+    @media (max-width: 900px) {
+      .orders-stats { grid-template-columns: repeat(2, 1fr); }
+      .orders-grid { grid-template-columns: 1fr; }
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .admin-mockups { padding: 1.25rem; }
+      .orders-stats { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  
+  <nav class="nav">
+    <div class="nav-logo">
+      <a href="../../index.html">
+        <img src="../../arquivos/logo.png" alt="VULTO CLUB" class="nav-logo-img" />
+      </a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="admin.html">PRODUTOS</a></li>
+      <li><a href="admin-links.html">LINKS</a></li>
+      <li><a href="admin-cupons.html">CUPONS</a></li>
+      <li><a href="admin-mockups.html" class="active">MOCKUPS</a></li>
+      <li><a href="admin-config.html">CONFIG</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="admin-mockups">
+    <h1>PEDIDOS DE MOCKUP</h1>
+    <p class="subtitle">Camisetas personalizadas aguardando produção</p>
+
+    <!-- Stats -->
+    <div class="orders-stats">
+      <div class="stat-card">
+        <div class="number" id="stat-total">0</div>
+        <div class="label">TOTAL DE PEDIDOS</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="stat-new">0</div>
+        <div class="label">NOVOS</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="stat-production">0</div>
+        <div class="label">EM PRODUÇÃO</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="stat-done">0</div>
+        <div class="label">ENVIADOS</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="orders-filters">
+      <button class="active" data-filter="all">TODOS</button>
+      <button data-filter="novo">NOVOS</button>
+      <button data-filter="producao">EM PRODUÇÃO</button>
+      <button data-filter="enviado">ENVIADOS</button>
+      <button data-filter="cancelado">CANCELADOS</button>
+    </div>
+
+    <!-- Orders Grid -->
+    <div class="orders-grid" id="orders-grid">
+      <div class="empty-orders">
+        <h3>NENHUM PEDIDO AINDA</h3>
+        <p>Quando clientes criarem mockups, os pedidos aparecerão aqui.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="detail-overlay" id="detail-overlay">
+    <div class="detail-modal">
+      <div class="detail-header">
+        <h2 id="detail-title">PEDIDO #VLT-000</h2>
+        <button class="detail-close" id="detail-close">×</button>
+      </div>
+      <div class="detail-body">
+        <div class="detail-grid">
+          <div class="detail-preview">
+            <img id="detail-preview-img" src="" alt="Preview do mockup" />
+          </div>
+          <div class="detail-info" id="detail-info">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+      <div class="detail-actions">
+        <button class="btn-whatsapp-order" id="btn-whatsapp-client">WHATSAPP CLIENTE</button>
+        <button class="btn-download-art" id="btn-download-art">BAIXAR ARTE</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    'use strict';
+
+    let orders = [];
+    let currentFilter = 'all';
+    let selectedOrder = null;
+
+    function loadOrders() {
+      orders = JSON.parse(localStorage.getItem('vulto_mockup_orders') || '[]');
+      updateStats();
+      renderOrders();
+    }
+
+    function updateStats() {
+      document.getElementById('stat-total').textContent = orders.length;
+      document.getElementById('stat-new').textContent = orders.filter(o => o.status === 'novo').length;
+      document.getElementById('stat-production').textContent = orders.filter(o => o.status === 'producao').length;
+      document.getElementById('stat-done').textContent = orders.filter(o => o.status === 'enviado').length;
+    }
+
+    function renderOrders() {
+      const grid = document.getElementById('orders-grid');
+      const filtered = currentFilter === 'all' ? orders : orders.filter(o => o.status === currentFilter);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-orders">
+            <h3>NENHUM PEDIDO</h3>
+            <p>${currentFilter === 'all' ? 'Quando clientes criarem mockups, os pedidos aparecerão aqui.' : 'Nenhum pedido com esse status.'}</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(order => {
+        const date = new Date(order.date).toLocaleDateString('pt-BR');
+        const modelNames = { 'basic-tshirt': 'Normal', 'oversized-tshirt': 'Oversized', 'polo-shirt': 'Polo' };
+        
+        return `
+          <div class="order-card" data-order-id="${order.id}">
+            <div class="order-card-header">
+              <span class="order-id">#${order.id}</span>
+              <span class="order-date">${date}</span>
+            </div>
+            <div class="order-card-body">
+              <div class="order-preview">
+                ${order.screenshot ? `<img src="${order.screenshot}" alt="Mockup" />` : '<span class="no-preview">Sem preview</span>'}
+              </div>
+              <div class="order-specs">
+                <div class="order-spec">
+                  <span class="spec-label">MODELO</span>
+                  <span class="spec-value">${modelNames[order.mockup.model] || order.mockup.model}</span>
+                </div>
+                <div class="order-spec">
+                  <span class="spec-label">TAMANHO</span>
+                  <span class="spec-value">${order.mockup.size}</span>
+                </div>
+                <div class="order-spec">
+                  <span class="spec-label">COR</span>
+                  <span class="spec-value"><span style="display:inline-block;width:14px;height:14px;background:${order.mockup.color};border:1px solid rgba(255,255,255,0.2);vertical-align:middle;margin-right:4px;"></span>${order.mockup.color}</span>
+                </div>
+                <div class="order-spec">
+                  <span class="spec-label">STATUS</span>
+                  <span class="order-status ${order.status}">${order.status.toUpperCase()}</span>
+                </div>
+              </div>
+              <div class="order-customer">
+                <p>${order.customer.name}</p>
+                <span>${order.customer.phone} ${order.customer.instagram ? '· ' + order.customer.instagram : ''}</span>
+              </div>
+            </div>
+            <div class="order-card-actions">
+              <button onclick="viewOrder('${order.id}')">VER DETALHES</button>
+              ${order.status === 'novo' ? `<button class="btn-production" onclick="updateStatus('${order.id}','producao')">PRODUÇÃO</button>` : ''}
+              ${order.status === 'producao' ? `<button class="btn-done" onclick="updateStatus('${order.id}','enviado')">ENVIADO</button>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.viewOrder = function(orderId) {
+      selectedOrder = orders.find(o => o.id === orderId);
+      if (!selectedOrder) return;
+
+      document.getElementById('detail-title').textContent = 'PEDIDO #' + selectedOrder.id;
+      
+      if (selectedOrder.screenshot) {
+        document.getElementById('detail-preview-img').src = selectedOrder.screenshot;
+      }
+
+      const modelNames = { 'basic-tshirt': 'Normal', 'oversized-tshirt': 'Oversized', 'polo-shirt': 'Polo' };
+      const mockup = selectedOrder.mockup;
+
+      let infoHtml = `
+        <h3>CLIENTE</h3>
+        <div class="detail-row"><span class="label">Nome</span><span class="value">${selectedOrder.customer.name}</span></div>
+        <div class="detail-row"><span class="label">WhatsApp</span><span class="value">${selectedOrder.customer.phone}</span></div>
+        <div class="detail-row"><span class="label">Instagram</span><span class="value">${selectedOrder.customer.instagram || '—'}</span></div>
+        
+        <h3>CAMISETA</h3>
+        <div class="detail-row"><span class="label">Modelo</span><span class="value">${modelNames[mockup.model] || mockup.model}</span></div>
+        <div class="detail-row"><span class="label">Cor</span><span class="value">${mockup.color}</span></div>
+        <div class="detail-row"><span class="label">Tamanho</span><span class="value">${mockup.size}</span></div>
+        
+        <h3>LOGO VULTO</h3>
+        <div class="detail-row"><span class="label">Posição</span><span class="value">${mockup.vultoLogo.position}</span></div>
+        <div class="detail-row"><span class="label">Tamanho</span><span class="value">${mockup.vultoLogo.size}%</span></div>
+      `;
+
+      if (mockup.customArt && mockup.customArt.hasArt) {
+        infoHtml += `
+          <h3>ARTE DO CLIENTE</h3>
+          <div class="detail-row"><span class="label">Arquivo</span><span class="value">${mockup.customArt.fileName || 'Enviado'}</span></div>
+          <div class="detail-row"><span class="label">Posição</span><span class="value">${mockup.customArt.position}</span></div>
+          <div class="detail-row"><span class="label">Tamanho</span><span class="value">${mockup.customArt.size}%</span></div>
+        `;
+      }
+
+      if (mockup.text && mockup.text.content) {
+        infoHtml += `
+          <h3>TEXTO</h3>
+          <div class="detail-row"><span class="label">Conteúdo</span><span class="value">"${mockup.text.content}"</span></div>
+          <div class="detail-row"><span class="label">Fonte</span><span class="value">${mockup.text.font}</span></div>
+          <div class="detail-row"><span class="label">Tamanho</span><span class="value">${mockup.text.size}</span></div>
+          <div class="detail-row"><span class="label">Posição</span><span class="value">${mockup.text.position}</span></div>
+          <div class="detail-row"><span class="label">Cor</span><span class="value">${mockup.text.color}</span></div>
+        `;
+      }
+
+      document.getElementById('detail-info').innerHTML = infoHtml;
+      document.getElementById('detail-overlay').classList.add('open');
+    };
+
+    window.updateStatus = function(orderId, newStatus) {
+      const order = orders.find(o => o.id === orderId);
+      if (order) {
+        order.status = newStatus;
+        localStorage.setItem('vulto_mockup_orders', JSON.stringify(orders));
+        updateStats();
+        renderOrders();
+      }
+    };
+
+    // WhatsApp client
+    document.getElementById('btn-whatsapp-client').addEventListener('click', function() {
+      if (!selectedOrder) return;
+      const phone = selectedOrder.customer.phone.replace(/\D/g, '');
+      const msg = encodeURIComponent(`Olá ${selectedOrder.customer.name}! Aqui é da Vulto Club. Sobre seu pedido de camiseta personalizada #${selectedOrder.id} — tudo certo para produção?`);
+      window.open(`https://wa.me/55${phone}?text=${msg}`, '_blank');
+    });
+
+    // Download screenshot
+    document.getElementById('btn-download-art').addEventListener('click', function() {
+      if (!selectedOrder || !selectedOrder.screenshot) return;
+      const link = document.createElement('a');
+      link.download = `mockup-${selectedOrder.id}.png`;
+      link.href = selectedOrder.screenshot;
+      link.click();
+    });
+
+    // Close detail
+    document.getElementById('detail-close').addEventListener('click', function() {
+      document.getElementById('detail-overlay').classList.remove('open');
+    });
+
+    // Filters
+    document.querySelectorAll('.orders-filters button').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.orders-filters button').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentFilter = this.dataset.filter;
+        renderOrders();
+      });
+    });
+
+    // Init
+    loadOrders();
+  })();
+  </script>
+</body>
+</html>

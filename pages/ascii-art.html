@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VULTO — Gerador ASCII Art</title>
+  <link rel="icon" type="image/png" href="../arquivos/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .ascii-page{min-height:100vh;padding:6rem 2rem 4rem;background:var(--bg)}
+    .ascii-container{max-width:1100px;margin:0 auto}
+    .ascii-container h1{font-family:var(--font-display);font-size:2.2rem;letter-spacing:.1em;margin-bottom:.25rem}
+    .ascii-container .sub{color:var(--muted2);font-size:.8rem;margin-bottom:2rem}
+    .ascii-layout{display:grid;grid-template-columns:320px 1fr;gap:2rem}
+    .ascii-controls{background:var(--bg2);border:1px solid var(--border);padding:1.5rem}
+    .ctrl-section{margin-bottom:1.5rem}
+    .ctrl-section h3{font-size:.68rem;letter-spacing:.15em;color:var(--muted2);margin-bottom:.75rem}
+    .ctrl-field{margin-bottom:.75rem}
+    .ctrl-field label{display:block;font-size:.62rem;letter-spacing:.1em;color:var(--muted);margin-bottom:.35rem}
+    .ctrl-field input,.ctrl-field select{width:100%;background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--white);padding:.6rem .75rem;font-family:var(--font);font-size:.8rem;outline:none}
+    .ctrl-field input:focus{border-color:rgba(255,255,255,.3)}
+    .upload-box{border:2px dashed rgba(255,255,255,.15);padding:1.5rem;text-align:center;cursor:pointer;transition:border-color .2s;position:relative}
+    .upload-box:hover{border-color:rgba(255,255,255,.3)}
+    .upload-box input{position:absolute;inset:0;opacity:0;cursor:pointer}
+    .upload-box p{font-size:.75rem;color:var(--muted2)}
+    .upload-box span{font-size:.62rem;color:var(--muted)}
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:.75rem;background:rgba(255,255,255,.03);border:1px solid var(--border);margin-bottom:.75rem}
+    .toggle-row span{font-size:.75rem;color:var(--white)}
+    .toggle{position:relative;width:40px;height:22px;cursor:pointer}
+    .toggle input{opacity:0;width:0;height:0}
+    .toggle .slider{position:absolute;inset:0;background:rgba(255,255,255,.1);border-radius:11px;transition:.3s}
+    .toggle .slider::before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:#555;border-radius:50%;transition:.3s}
+    .toggle input:checked + .slider{background:rgba(255,255,255,.3)}
+    .toggle input:checked + .slider::before{transform:translateX(18px);background:#fff}
+    .btn-generate{width:100%;background:var(--white);color:#000;border:none;padding:.85rem;font-family:var(--font);font-size:.7rem;font-weight:700;letter-spacing:.15em;cursor:pointer;transition:opacity .2s;margin-top:.5rem}
+    .btn-generate:hover{opacity:.85}
+    .btn-download{width:100%;background:transparent;border:1px solid var(--border);color:var(--white);padding:.75rem;font-family:var(--font);font-size:.68rem;letter-spacing:.12em;cursor:pointer;margin-top:.5rem;transition:all .2s}
+    .btn-download:hover{border-color:var(--white)}
+
+    /* Output */
+    .ascii-output{background:#000;border:1px solid var(--border);min-height:500px;display:flex;align-items:center;justify-content:center;overflow:auto;position:relative}
+    .ascii-output pre{font-family:'JetBrains Mono',monospace;font-size:4px;line-height:4.5px;letter-spacing:0.5px;color:#fff;white-space:pre;user-select:all;padding:1rem}
+    .ascii-output .placeholder{color:var(--muted);font-size:.85rem;letter-spacing:.1em}
+    .ascii-output canvas{display:none}
+    .numeracao-badge{position:absolute;bottom:1.5rem;right:1.5rem;font-family:var(--font-display);font-size:1.5rem;letter-spacing:.1em;color:rgba(255,255,255,.3)}
+
+    @media(max-width:900px){.ascii-layout{grid-template-columns:1fr}.ascii-output{min-height:350px}}
+    .color-opt{width:28px;height:28px;border-radius:50%;cursor:pointer;transition:all .2s;border:2px solid transparent}
+    .color-opt:hover{transform:scale(1.15)}
+    .color-opt.active{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.2)}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-logo"><a href="/"><img src="../arquivos/logo.png" alt="VULTO" class="nav-logo-img" /></a></div>
+    <ul class="nav-links">
+      <li><a href="/gestao">GESTÃO</a></li>
+    </ul>
+  </nav>
+
+  <main class="ascii-page">
+    <div class="ascii-container">
+      <h1>ASCII ART GENERATOR</h1>
+      <p class="sub">Converte imagem em arte feita com a palavra VULTO</p>
+
+      <div class="ascii-layout">
+        <!-- Controls -->
+        <div class="ascii-controls">
+          <div class="ctrl-section">
+            <h3>IMAGEM</h3>
+            <div class="upload-box" id="upload-box">
+              <p>Arraste ou clique</p>
+              <span>PNG, JPG — a imagem vira ASCII</span>
+              <input type="file" id="img-input" accept="image/*" />
+            </div>
+            <img id="img-preview" src="" style="display:none;width:100%;margin-top:.75rem;border:1px solid var(--border)" />
+          </div>
+
+          <div class="ctrl-section">
+            <h3>CONFIGURAÇÕES</h3>
+            <div class="toggle-row">
+              <span>Efeito ASCII com "VULTO"</span>
+              <label class="toggle"><input type="checkbox" id="toggle-ascii" checked /><span class="slider"></span></label>
+            </div>
+            <div class="ctrl-field">
+              <label>COR DO TEXTO</label>
+              <div style="display:flex;gap:.5rem;margin-top:.3rem">
+                <div class="color-opt active" data-ascii-color="#ffffff" style="background:#fff" onclick="setAsciiColor(this,'#ffffff')"></div>
+                <div class="color-opt" data-ascii-color="#00ff00" style="background:#00ff00" onclick="setAsciiColor(this,'#00ff00')"></div>
+                <div class="color-opt" data-ascii-color="#ff4444" style="background:#ff4444" onclick="setAsciiColor(this,'#ff4444')"></div>
+                <div class="color-opt" data-ascii-color="#fbbf24" style="background:#fbbf24" onclick="setAsciiColor(this,'#fbbf24')"></div>
+                <div class="color-opt" data-ascii-color="#06b6d4" style="background:#06b6d4" onclick="setAsciiColor(this,'#06b6d4')"></div>
+                <div class="color-opt" data-ascii-color="#a855f7" style="background:#a855f7" onclick="setAsciiColor(this,'#a855f7')"></div>
+              </div>
+            </div>
+            <div class="ctrl-field">
+              <label>COR DE FUNDO</label>
+              <div style="display:flex;gap:.5rem;margin-top:.3rem">
+                <div class="color-opt active" data-ascii-bg="#000000" style="background:#000;border:1px solid #333" onclick="setAsciiBg(this,'#000000')"></div>
+                <div class="color-opt" data-ascii-bg="#ffffff" style="background:#fff" onclick="setAsciiBg(this,'#ffffff')"></div>
+                <div class="color-opt" data-ascii-bg="#1a1a1a" style="background:#1a1a1a;border:1px solid #333" onclick="setAsciiBg(this,'#1a1a1a')"></div>
+                <div class="color-opt" data-ascii-bg="#0a0a2a" style="background:#0a0a2a;border:1px solid #333" onclick="setAsciiBg(this,'#0a0a2a')"></div>
+              </div>
+            </div>
+            <div class="ctrl-field">
+              <label>RESOLUÇÃO (colunas)</label>
+              <input type="range" id="resolution" min="40" max="200" value="100" />
+            </div>
+            <div class="ctrl-field">
+              <label>CONTRASTE</label>
+              <input type="range" id="contrast" min="50" max="200" value="120" />
+            </div>
+            <div class="ctrl-field">
+              <label>INVERTER CORES</label>
+              <label class="toggle"><input type="checkbox" id="toggle-invert" /><span class="slider"></span></label>
+            </div>
+          </div>
+
+          <div class="ctrl-section">
+            <h3>NUMERAÇÃO</h3>
+            <div class="ctrl-field">
+              <label>NÚMERO DA PEÇA</label>
+              <input type="text" id="numeracao" placeholder="001/050" value="001/050" />
+            </div>
+          </div>
+
+          <button class="btn-generate" onclick="generate()">GERAR ASCII ART</button>
+          <button class="btn-download" onclick="downloadArt()">BAIXAR IMAGEM</button>
+        </div>
+
+        <!-- Output -->
+        <div class="ascii-output" id="ascii-output">
+          <span class="placeholder">Envie uma imagem para gerar</span>
+          <canvas id="hidden-canvas"></canvas>
+          <div class="numeracao-badge" id="num-badge"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+  (function(){
+    const WORD = 'VULTO';
+    let loadedImg = null;
+    let asciiColor = '#ffffff';
+    let asciiBg = '#000000';
+
+    window.setAsciiColor = function(el, color) {
+      document.querySelectorAll('[data-ascii-color]').forEach(e => e.classList.remove('active'));
+      el.classList.add('active');
+      asciiColor = color;
+      if (loadedImg) generate();
+    };
+
+    window.setAsciiBg = function(el, color) {
+      document.querySelectorAll('[data-ascii-bg]').forEach(e => e.classList.remove('active'));
+      el.classList.add('active');
+      asciiBg = color;
+      if (loadedImg) generate();
+    };
+
+    // Upload
+    document.getElementById('img-input').addEventListener('change', function() {
+      const file = this.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        loadedImg = new Image();
+        loadedImg.onload = function() {
+          document.getElementById('img-preview').src = e.target.result;
+          document.getElementById('img-preview').style.display = 'block';
+          generate();
+        };
+        loadedImg.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+      // Reset input so same file can be re-selected
+      this.value = '';
+    });
+
+    // Auto-regenerate on setting change
+    document.getElementById('resolution').addEventListener('input', () => { if(loadedImg) generate(); });
+    document.getElementById('resolution').addEventListener('change', () => { if(loadedImg) generate(); });
+    document.getElementById('contrast').addEventListener('input', () => { if(loadedImg) generate(); });
+    document.getElementById('contrast').addEventListener('change', () => { if(loadedImg) generate(); });
+    document.getElementById('toggle-ascii').addEventListener('change', () => { if(loadedImg) generate(); });
+    document.getElementById('toggle-invert').addEventListener('change', () => { if(loadedImg) generate(); });
+    document.getElementById('numeracao').addEventListener('input', function() {
+      document.getElementById('num-badge').textContent = this.value;
+    });
+
+    window.generate = function() {
+      if (!loadedImg) return;
+
+      const cols = parseInt(document.getElementById('resolution').value);
+      const contrast = parseInt(document.getElementById('contrast').value) / 100;
+      const useAscii = document.getElementById('toggle-ascii').checked;
+      const invert = document.getElementById('toggle-invert').checked;
+      const numeracao = document.getElementById('numeracao').value;
+
+      // Draw image to canvas
+      const canvas = document.getElementById('hidden-canvas');
+      const ctx = canvas.getContext('2d');
+      const aspect = loadedImg.height / loadedImg.width;
+      const rows = Math.floor(cols * aspect * 0.45); // char aspect ratio correction
+      canvas.width = cols;
+      canvas.height = rows;
+      ctx.drawImage(loadedImg, 0, 0, cols, rows);
+
+      const imageData = ctx.getImageData(0, 0, cols, rows);
+      const pixels = imageData.data;
+
+      let ascii = '';
+      let wordIdx = 0;
+
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          const i = (y * cols + x) * 4;
+          let r = pixels[i], g = pixels[i+1], b = pixels[i+2];
+
+          // Apply contrast
+          r = clamp(((r/255 - 0.5) * contrast + 0.5) * 255);
+          g = clamp(((g/255 - 0.5) * contrast + 0.5) * 255);
+          b = clamp(((b/255 - 0.5) * contrast + 0.5) * 255);
+
+          let brightness = (r + g + b) / 3 / 255;
+          if (invert) brightness = 1 - brightness;
+
+          if (useAscii) {
+            // Use VULTO characters based on brightness
+            if (brightness > 0.1) {
+              ascii += WORD[wordIdx % WORD.length];
+              wordIdx++;
+            } else {
+              ascii += ' ';
+            }
+          } else {
+            // Standard ASCII density
+            const chars = ' .:-=+*#%@';
+            const idx = Math.floor(brightness * (chars.length - 1));
+            ascii += chars[idx];
+          }
+        }
+        ascii += '\n';
+      }
+
+      const output = document.getElementById('ascii-output');
+      output.style.background = asciiBg;
+      output.innerHTML = '<pre style="color:' + asciiColor + '">' + ascii + '</pre><div class="numeracao-badge">' + numeracao + '</div>';
+    };
+
+    function clamp(v) { return Math.max(0, Math.min(255, v)); }
+
+    window.downloadArt = function() {
+      const pre = document.querySelector('#ascii-output pre');
+      if (!pre) { alert('Gere a arte primeiro'); return; }
+
+      // Render to canvas for download
+      const text = pre.textContent;
+      const lines = text.split('\n');
+      const fontSize = 5;
+      const lineHeight = 5.5;
+      const charWidth = 3.5;
+      const padding = 40;
+      const numText = document.getElementById('numeracao').value;
+
+      const w = (lines[0]?.length || 100) * charWidth + padding * 2;
+      const h = lines.length * lineHeight + padding * 2 + 30;
+
+      const c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      const cx = c.getContext('2d');
+
+      // Background
+      cx.fillStyle = asciiBg;
+      cx.fillRect(0, 0, w, h);
+
+      // ASCII text
+      cx.font = fontSize + 'px "JetBrains Mono", monospace';
+      cx.fillStyle = asciiColor;
+      lines.forEach((line, i) => {
+        cx.fillText(line, padding, padding + i * lineHeight);
+      });
+
+      // Numeração
+      if (numText) {
+        cx.font = 'bold 18px "Bebas Neue", Impact, sans-serif';
+        cx.fillStyle = 'rgba(255,255,255,0.3)';
+        cx.textAlign = 'right';
+        cx.fillText(numText, w - padding, h - padding);
+      }
+
+      // Download
+      const link = document.createElement('a');
+      link.download = 'vulto-ascii-' + Date.now() + '.png';
+      link.href = c.toDataURL('image/png');
+      link.click();
+    };
+
+    // Init numeração
+    document.getElementById('num-badge').textContent = document.getElementById('numeracao').value;
+  })();
+  </script>
+</body>
+</html>
