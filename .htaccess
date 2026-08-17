@@ -23,6 +23,7 @@ RewriteRule ^gestao/ascii$ pages/ascii-art.html [L]
 
 # Rotas públicas
 RewriteRule ^meu-pedido$ pages/meu-pedido.html [L]
+RewriteRule ^evento$ pages/evento.html [L]
 
 # Bloqueia /admin antigo
 RewriteRule ^admin(.*)$ - [R=404,L]
@@ -67,6 +68,7 @@ RewriteRule ^api/pedidos$ api/pedidos.php [L,QSA]
 RewriteRule ^api/pedidos/consultar$ api/pedidos.php?action=consultar [L,QSA]
 RewriteRule ^api/pagamento$ api/pagamento.php [L,QSA]
 RewriteRule ^api/frete$ api/frete.php [L,QSA]
+RewriteRule ^api/vouchers$ api/vouchers.php [L,QSA]
 RewriteRule ^api/mockup-orders$ api/mockup-orders.php [L,QSA]
 RewriteRule ^api/portfolio/login$ api/portfolio-login.php [L,QSA]
 RewriteRule ^api/portfolio/auth$ api/portfolio-auth.php [L,QSA]

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Check-in — Vulto Club</title>
+  <link rel="icon" type="image/png" href="../../arquivos/logo.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:#080808;color:#f0f0f0;font-family:'Inter',sans-serif;min-height:100vh;padding:1rem}
+    .container{max-width:500px;margin:0 auto;text-align:center}
+    h1{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.1em;margin-bottom:.5rem}
+    .sub{color:#888;font-size:.8rem;margin-bottom:1.5rem}
+    #reader{width:100%;max-width:400px;margin:0 auto 1.5rem;border-radius:8px;overflow:hidden}
+    .manual{margin-bottom:1.5rem}
+    .manual input{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;padding:.75rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.9rem;text-transform:uppercase;text-align:center;width:70%;outline:none}
+    .manual input:focus{border-color:rgba(255,255,255,.3)}
+    .manual button{background:#fff;color:#000;border:none;padding:.75rem 1.25rem;font-size:.7rem;font-weight:700;letter-spacing:.1em;cursor:pointer;margin-left:.5rem}
+    /* Result */
+    .result{display:none;padding:1.5rem;border-radius:8px;margin-top:1rem;text-align:left}
+    .result.ok{background:rgba(34,197,94,.1);border:2px solid #22c55e}
+    .result.used{background:rgba(251,191,36,.1);border:2px solid #fbbf24}
+    .result.err{background:rgba(239,68,68,.1);border:2px solid #ef4444}
+    .result h3{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;margin-bottom:.5rem}
+    .result .info{font-size:.8rem;color:#ccc;line-height:1.6}
+    .result .info strong{color:#fff}
+    .stats{display:flex;gap:1rem;justify-content:center;margin-top:2rem;margin-bottom:1rem}
+    .stat-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);padding:1rem;flex:1;text-align:center}
+    .stat-box .n{font-family:'Bebas Neue',sans-serif;font-size:1.5rem}
+    .stat-box .l{font-size:.6rem;letter-spacing:.12em;color:#888}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>CHECK-IN EVENTO</h1>
+    <p class="sub">Escaneie o QR code do voucher ou digite o código</p>
+
+    <div id="reader"></div>
+
+    <div class="manual">
+      <input type="text" id="code-input" placeholder="EXP-XXXXXX" />
+      <button onclick="validarManual()">VALIDAR</button>
+    </div>
+
+    <div class="result" id="result"></div>
+
+    <div class="stats" id="stats"></div>
+  </div>
+
+  <script>
+  let scanner = null;
+
+  // Init camera scanner
+  function initScanner() {
+    scanner = new Html5Qrcode('reader');
+    scanner.start(
+      { facingMode: 'environment' },
+      { fps: 10, qrbox: { width: 250, height: 250 } },
+      onScanSuccess
+    ).catch(err => {
+      document.getElementById('reader').innerHTML = '<p style="color:#888;font-size:.75rem;padding:2rem">Câmera não disponível. Use o campo manual.</p>';
+    });
+  }
+
+  function onScanSuccess(code) {
+    scanner.pause();
+    validar(code.toUpperCase());
+    setTimeout(() => { try { scanner.resume(); } catch(e){} }, 3000);
+  }
+
+  async function validarManual() {
+    const code = document.getElementById('code-input').value.trim().toUpperCase();
+    if (!code) return;
+    await validar(code);
+    document.getElementById('code-input').value = '';
+  }
+
+  async function validar(codigo) {
+    const resEl = document.getElementById('result');
+    try {
+      const r = await fetch('/api/vouchers.php?action=checkin', {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({codigo})
+      });
+      const data = await r.json();
+
+      if (data.success) {
+        const v = data.voucher;
+        resEl.className = 'result ok';
+        resEl.innerHTML = `<h3>✓ CHECK-IN OK</h3><div class="info"><strong>${v.nome}</strong><br>${v.carro} · ${v.placa}<br>Tipo: ${v.tipo==='batalha'?'Batalha de Ronco':'Exposição'}<br>Código: ${v.codigo}</div>`;
+      } else if (data.error === 'Já utilizado') {
+        const v = data.voucher;
+        resEl.className = 'result used';
+        resEl.innerHTML = `<h3>⚠ JÁ UTILIZADO</h3><div class="info"><strong>${v.nome}</strong><br>${v.carro} · ${v.placa}<br>Check-in em: ${new Date(v.checkinEm).toLocaleString('pt-BR')}</div>`;
+      } else {
+        resEl.className = 'result err';
+        resEl.innerHTML = `<h3>✗ INVÁLIDO</h3><div class="info">${data.error || 'Código não encontrado'}</div>`;
+      }
+    } catch(e) {
+      resEl.className = 'result err';
+      resEl.innerHTML = `<h3>✗ ERRO</h3><div class="info">Erro de conexão</div>`;
+    }
+    resEl.style.display = 'block';
+    loadStats();
+  }
+
+  async function loadStats() {
+    try {
+      const r = await fetch('/api/vouchers.php?action=vagas');
+      const d = await r.json();
+      document.getElementById('stats').innerHTML = `
+        <div class="stat-box"><div class="n">${d.exposicao.usadas}</div><div class="l">EXPOSIÇÃO</div></div>
+        <div class="stat-box"><div class="n">${d.batalha.usadas}</div><div class="l">BATALHA</div></div>
+      `;
+    } catch(e){}
+  }
+
+  // Allow Enter on input
+  document.getElementById('code-input').addEventListener('keydown', function(e) { if(e.key==='Enter') validarManual(); });
+
+  initScanner();
+  loadStats();
+  </script>
+</body>
+</html>

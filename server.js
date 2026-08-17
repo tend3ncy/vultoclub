@@ -510,6 +510,118 @@ const server = http.createServer(async (req, res) => {
   }
 
   // ══════════════════════════════════════════════════════════════════════════
+  // VOUCHERS API (local dev)
+  // ══════════════════════════════════════════════════════════════════════════
+
+  if (pathname === '/api/vouchers.php' || pathname === '/api/vouchers') {
+    const vouchersFile = path.join(__dirname, 'data', 'vouchers.json');
+    const eventoConfigFile = path.join(__dirname, 'data', 'evento-config.json');
+
+    function getEventoConfig() {
+      try { return JSON.parse(fs.readFileSync(eventoConfigFile, 'utf8')); } catch { return {maxExposicao:100,maxBatalha:16}; }
+    }
+    const evConfig = getEventoConfig();
+    const MAX_EXPO = evConfig.maxExposicao;
+    const MAX_BATALHA = evConfig.maxBatalha;
+
+    function loadVouchers() {
+      try { return JSON.parse(fs.readFileSync(vouchersFile, 'utf8')); } catch { return []; }
+    }
+    function saveVouchers(data) { fs.writeFileSync(vouchersFile, JSON.stringify(data, null, 2)); }
+
+    const action = url.searchParams.get('action') || '';
+
+    if (req.method === 'GET' && action === 'vagas') {
+      const v = loadVouchers();
+      const expo = v.filter(x => x.tipo === 'exposicao').length;
+      const bat = v.filter(x => x.tipo === 'batalha').length;
+      return json(res, 200, { exposicao: {total:MAX_EXPO, usadas:expo, disponiveis:MAX_EXPO-expo}, batalha: {total:MAX_BATALHA, usadas:bat, disponiveis:MAX_BATALHA-bat} });
+    }
+
+    if (req.method === 'GET' && action === 'consultar') {
+      const codigo = (url.searchParams.get('codigo') || '').toUpperCase();
+      const v = loadVouchers();
+      const found = v.find(x => x.codigo === codigo);
+      if (!found) return json(res, 404, {error:'Voucher não encontrado'});
+      return json(res, 200, found);
+    }
+
+    if (req.method === 'GET' && !action) {
+      if (!isAuthenticated(req)) return json(res, 401, {error:'Não autorizado'});
+      return json(res, 200, loadVouchers());
+    }
+
+    if (req.method === 'POST' && !action) {
+      const body = await parseBody(req);
+      if (!body.nome || !body.tipo) return json(res, 400, {error:'Nome e tipo obrigatórios'});
+      const tipo = body.tipo;
+      if (!['exposicao','batalha'].includes(tipo)) return json(res, 400, {error:'Tipo inválido'});
+      const v = loadVouchers();
+      const count = v.filter(x => x.tipo === tipo).length;
+      const max = tipo === 'batalha' ? MAX_BATALHA : MAX_EXPO;
+      if (count >= max) return json(res, 409, {error:'Vagas esgotadas'});
+
+      // Verifica placa duplicada
+      const placa = (body.placa||'').toUpperCase();
+      if (placa && v.find(x => x.placa === placa)) {
+        return json(res, 409, {error:'Essa placa já está cadastrada!'});
+      }
+      const prefix = tipo === 'batalha' ? 'BTL' : 'EXP';
+      const voucher = {
+        id: 'vch_' + Date.now().toString(36),
+        codigo: prefix + '-' + crypto.randomBytes(3).toString('hex').toUpperCase(),
+        tipo, nome: body.nome, carro: body.carro||'', placa: (body.placa||'').toUpperCase(),
+        instagram: body.instagram||'', telefone: body.telefone||'',
+        checkin: false, criadoEm: new Date().toISOString()
+      };
+      v.push(voucher);
+      saveVouchers(v);
+      return json(res, 200, {success:true, voucher});
+    }
+
+    if (req.method === 'PUT' && action === 'checkin') {
+      if (!isAuthenticated(req)) return json(res, 401, {error:'Não autorizado'});
+      const body = await parseBody(req);
+      const codigo = (body.codigo||'').toUpperCase();
+      const v = loadVouchers();
+      const found = v.find(x => x.codigo === codigo);
+      if (!found) return json(res, 404, {error:'Não encontrado'});
+      if (found.checkin) return json(res, 200, {error:'Já utilizado', voucher:found});
+      found.checkin = true;
+      found.checkinEm = new Date().toISOString();
+      saveVouchers(v);
+      return json(res, 200, {success:true, voucher:found});
+    }
+
+    if (req.method === 'DELETE') {
+      if (!isAuthenticated(req)) return json(res, 401, {error:'Não autorizado'});
+      const body = await parseBody(req);
+      const id = body.id;
+      if (!id) return json(res, 400, {error:'ID obrigatório'});
+      let v = loadVouchers();
+      v = v.filter(x => x.id !== id);
+      saveVouchers(v);
+      return json(res, 200, {success:true});
+    }
+
+    if (req.method === 'GET' && action === 'config') {
+      return json(res, 200, getEventoConfig());
+    }
+
+    if (req.method === 'PUT' && action === 'config') {
+      if (!isAuthenticated(req)) return json(res, 401, {error:'Não autorizado'});
+      const body = await parseBody(req);
+      const cfg = getEventoConfig();
+      if (body.maxExposicao !== undefined) cfg.maxExposicao = parseInt(body.maxExposicao);
+      if (body.maxBatalha !== undefined) cfg.maxBatalha = parseInt(body.maxBatalha);
+      fs.writeFileSync(eventoConfigFile, JSON.stringify(cfg));
+      return json(res, 200, {success:true, config:cfg});
+    }
+
+    return json(res, 405, {error:'Método não permitido'});
+  }
+
+  // ══════════════════════════════════════════════════════════════════════════
   // PARCERIAS API
   // ══════════════════════════════════════════════════════════════════════════
 
@@ -780,6 +892,18 @@ const server = http.createServer(async (req, res) => {
   }
   if (pathname === '/gestao/pedidos') {
     res.writeHead(302, { Location: '/pages/admin/admin-pedidos.html' });
+    return res.end();
+  }
+  if (pathname === '/gestao/checkin') {
+    res.writeHead(302, { Location: '/pages/admin/checkin.html' });
+    return res.end();
+  }
+  if (pathname === '/gestao/inscritos') {
+    res.writeHead(302, { Location: '/pages/admin/admin-vouchers.html' });
+    return res.end();
+  }
+  if (pathname === '/gestao/chaveamento') {
+    res.writeHead(302, { Location: '/pages/admin/chaveamento.html' });
     return res.end();
   }
   if (pathname === '/gestao/estoque') {

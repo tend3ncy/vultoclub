@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inscrição — Encontro Automotivo Vulto Club</title>
+  <link rel="icon" type="image/png" href="../arquivos/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .ev-page{min-height:100vh;background:var(--bg);padding:2rem 1.5rem 4rem}
+    .ev-container{max-width:500px;margin:0 auto;text-align:center}
+    .ev-logo{width:120px;margin:0 auto 1.5rem}
+    .ev-title{font-family:var(--font-display);font-size:2rem;letter-spacing:.08em;margin-bottom:.25rem}
+    .ev-sub{font-size:.8rem;color:var(--muted2);margin-bottom:.5rem}
+    .ev-info{font-size:.72rem;color:var(--muted);margin-bottom:2rem;line-height:1.6}
+    .ev-vagas{display:flex;gap:1rem;justify-content:center;margin-bottom:2rem}
+    .ev-vaga{background:var(--bg2);border:1px solid var(--border);padding:1rem;flex:1;text-align:center}
+    .ev-vaga .num{font-family:var(--font-display);font-size:1.8rem}
+    .ev-vaga .lab{font-size:.6rem;letter-spacing:.12em;color:var(--muted2);margin-top:.2rem}
+    .ev-vaga.esgotado .num{color:#ef4444;opacity:.5}
+    .ev-form{text-align:left}
+    .ef-field{margin-bottom:1rem}
+    .ef-field label{display:block;font-size:.65rem;letter-spacing:.1em;color:var(--muted2);margin-bottom:.4rem}
+    .cat-toggle{display:flex;gap:.5rem}
+    .cat-btn{flex:1;background:rgba(255,255,255,.03);border:2px solid var(--border);color:var(--muted2);padding:.85rem .5rem;font-family:var(--font);font-size:.72rem;font-weight:600;letter-spacing:.05em;cursor:pointer;transition:all .2s;text-align:center;-webkit-tap-highlight-color:transparent}
+    .cat-btn:hover{border-color:rgba(255,255,255,.2)}
+    .cat-btn.active{border-color:#fbbf24;color:#fbbf24;background:rgba(251,191,36,.08)}
+    .cat-btn:active{transform:scale(.97)}
+    .ef-field input,.ef-field select{width:100%;background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--white);padding:.75rem 1rem;font-family:var(--font);font-size:.85rem;outline:none;-webkit-appearance:none;appearance:none;border-radius:0}
+    .ef-field input:focus,.ef-field select:focus{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.05)}
+    .ef-field select option{background:var(--bg2)}
+    .ef-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+    .btn-inscrever{width:100%;background:var(--white);color:#000;border:none;padding:1.1rem;font-family:var(--font);font-size:.75rem;font-weight:700;letter-spacing:.15em;cursor:pointer;transition:all .2s;margin-top:.75rem;-webkit-tap-highlight-color:transparent}
+    .btn-inscrever:hover{opacity:.85}
+    .btn-inscrever:active{transform:scale(.97)}
+    .btn-inscrever:disabled{opacity:.4;cursor:not-allowed;transform:none}
+    .ev-rules{font-size:.68rem;color:var(--muted);margin-top:1.5rem;line-height:1.6;text-align:left;padding:1rem;background:rgba(255,255,255,.02);border:1px solid var(--border)}
+    .ev-rules strong{color:#fbbf24}
+    .ev-error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;padding:.75rem;font-size:.78rem;margin-bottom:1rem;display:none}
+
+    /* Voucher visual — flip card */
+    .voucher-card{display:none;margin-top:2rem;perspective:1000px}
+    .voucher-card.show{display:block}
+    .voucher-card p.hint{font-size:.7rem;color:var(--muted);margin-bottom:1rem;letter-spacing:.1em}
+
+    .flip-container{width:100%;max-width:280px;height:200px;margin:0 auto;cursor:pointer;-webkit-tap-highlight-color:transparent}
+    .flip-inner{position:relative;width:100%;height:100%;transition:transform 0.6s;transform-style:preserve-3d}
+    .flip-container.flipped .flip-inner{transform:rotateY(180deg)}
+    .flip-front,.flip-back{position:absolute;width:100%;height:100%;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:12px;overflow:hidden}
+
+    /* Front — card visual */
+    .flip-front{background:linear-gradient(135deg,#0a0a0a 0%,#1a1a1a 100%);border:2px solid #fbbf24;display:flex;flex-direction:column;justify-content:space-between;padding:1.5rem;z-index:2}
+    .flip-front .top{display:flex;justify-content:space-between;align-items:flex-start}
+    .flip-front .brand{font-family:var(--font-display);font-size:1.3rem;letter-spacing:.08em;color:#fbbf24}
+    .flip-front .tipo-badge{font-size:.55rem;letter-spacing:.12em;background:rgba(251,191,36,.15);color:#fbbf24;padding:.25rem .6rem;border-radius:2px;font-weight:700}
+    .flip-front .middle{text-align:left}
+    .flip-front .nome{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:.2rem}
+    .flip-front .carro{font-size:.75rem;color:#888}
+    .flip-front .bottom{display:flex;justify-content:space-between;align-items:flex-end}
+    .flip-front .placa{font-family:'JetBrains Mono',monospace;font-size:.85rem;letter-spacing:.1em;color:#fbbf24;background:rgba(251,191,36,.1);padding:.3rem .6rem;border:1px solid rgba(251,191,36,.3)}
+    .flip-front .data{font-size:.6rem;color:#555;text-align:right;line-height:1.5}
+    .flip-front .tap-hint{position:absolute;bottom:.5rem;left:50%;transform:translateX(-50%);font-size:.55rem;color:#444;letter-spacing:.1em;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+    /* Back — QR code */
+    .flip-back{background:#000;border:2px solid #fbbf24;transform:rotateY(180deg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;text-align:center}
+    .flip-back .qr-wrap{background:#fff;padding:8px;border-radius:4px;margin:0 auto .5rem;text-align:center;display:inline-block}
+    .flip-back .qr-wrap img,.flip-back .qr-wrap canvas{width:64px!important;height:64px!important;display:block!important;margin:0 auto}
+    .flip-back .codigo{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:#fbbf24;letter-spacing:.1em;margin-bottom:.3rem}
+    .flip-back .confirm{font-size:.55rem;color:#888;letter-spacing:.08em}
+    .flip-back .evento-mini{font-size:.5rem;color:#444;margin-top:.5rem;line-height:1.4;text-align:center}
+
+    .btn-save-voucher{margin-top:1.25rem;background:transparent;border:1px solid rgba(251,191,36,.3);color:#fbbf24;padding:.65rem 1.5rem;font-family:var(--font);font-size:.65rem;letter-spacing:.1em;cursor:pointer;transition:all .2s}
+    .btn-save-voucher:hover{background:rgba(251,191,36,.1)}
+
+    @media(max-width:600px){
+      .ev-page{padding:1rem 0.75rem 3rem}
+      .ev-container{max-width:100%}
+      .ev-logo{width:80px;margin-bottom:1rem}
+      .ev-title{font-size:1.6rem}
+      .ev-sub{font-size:.75rem}
+      .ev-info{font-size:.7rem;margin-bottom:1.5rem}
+      .ev-vagas{gap:.5rem}
+      .ev-vaga{padding:.75rem .5rem}
+      .ev-vaga .num{font-size:1.5rem}
+      .ev-vaga .lab{font-size:.55rem}
+      .ef-row{grid-template-columns:1fr}
+      .ef-field input,.ef-field select{padding:.85rem 1rem;font-size:.85rem;border-radius:0}
+      .ef-field label{font-size:.62rem;margin-bottom:.35rem}
+      .btn-inscrever{padding:1.1rem;font-size:.75rem;border-radius:0}
+      .ev-rules{font-size:.65rem;padding:.75rem}
+      .voucher-card{padding:1.5rem 1rem;margin-top:1.5rem}
+      .voucher-card h2{font-size:1.3rem}
+      .voucher-card .codigo{font-size:1rem}
+      .voucher-card .qr{padding:.75rem}
+      .voucher-card .evento-info{font-size:.62rem}
+    }
+  </style>
+</head>
+<body>
+  <main class="ev-page">
+    <div class="ev-container">
+      <img src="../arquivos/logo.png" class="ev-logo" alt="Vulto Club" />
+      <h1 class="ev-title">ENCONTRO AUTOMOTIVO</h1>
+      <p class="ev-sub">Encontro Automotivo + Batalha de Ronco</p>
+      <p class="ev-info">📍 Av. Lauro de Gusmão Silveira — Taboão, Guarulhos<br>📅 22/08 — Sábado — 18:00</p>
+
+      <div class="ev-vagas" id="ev-vagas"></div>
+
+      <!-- FORM -->
+      <div id="form-wrap">
+        <div id="ev-error" class="ev-error"></div>
+        <form class="ev-form" onsubmit="inscrever(event)">
+          <div class="ef-field">
+            <label>CATEGORIA</label>
+            <div class="cat-toggle" id="cat-toggle">
+              <button type="button" class="cat-btn active" id="cat-expo" onclick="setCat('exposicao')">🏎 EXPOSIÇÃO</button>
+              <button type="button" class="cat-btn" id="cat-batalha" onclick="setCat('batalha')">🔥 BATALHA DE RONCO</button>
+            </div>
+            <input type="hidden" id="f-tipo" value="exposicao" />
+          </div>
+          <div class="ef-field">
+            <label>SEU NOME</label>
+            <input type="text" id="f-nome" required placeholder="Nome completo" />
+          </div>
+          <div class="ef-row">
+            <div class="ef-field">
+              <label>CARRO (modelo/cor)</label>
+              <input type="text" id="f-carro" required placeholder="Ex: Civic Preto" />
+            </div>
+            <div class="ef-field">
+              <label>PLACA</label>
+              <input type="text" id="f-placa" required placeholder="ABC-1234" style="text-transform:uppercase" />
+            </div>
+          </div>
+          <div class="ef-row">
+            <div class="ef-field">
+              <label>INSTAGRAM</label>
+              <input type="text" id="f-ig" placeholder="@seuuser" />
+            </div>
+            <div class="ef-field">
+              <label>WHATSAPP</label>
+              <input type="tel" id="f-tel" placeholder="(11) 99999-9999" />
+            </div>
+          </div>
+          <button type="submit" class="btn-inscrever" id="btn-sub">GARANTIR MINHA VAGA</button>
+        </form>
+        <div class="ev-rules">
+          <strong>⚠ REGRAS DO EVENTO:</strong><br>
+          • Sem som alto<br>
+          • Sem corte de giro<br>
+          • Vagas limitadas — 100 no total (expo + batalha)<br>
+          • Apresente o QR code na entrada
+        </div>
+      </div>
+
+      <!-- VOUCHER — Card simples com código -->
+      <div class="voucher-card" id="voucher-card">
+        <div style="background:#0a0a0a;border:2px solid #fbbf24;border-radius:8px;padding:1.5rem;text-align:center;max-width:320px;margin:0 auto">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:#fbbf24;letter-spacing:.1em;margin-bottom:.5rem">VULTO CLUB</div>
+          <div style="font-size:.65rem;letter-spacing:.12em;color:#888;margin-bottom:1rem">ENCONTRO AUTOMOTIVO · 22/08</div>
+          <div style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);padding:.4rem .8rem;display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.1em;color:#fbbf24;margin-bottom:1rem" id="v-tipo"></div>
+          <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:.25rem" id="v-nome"></div>
+          <div style="font-size:.8rem;color:#888;margin-bottom:.75rem" id="v-carro"></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;color:#fbbf24;letter-spacing:.12em;background:rgba(0,0,0,.5);padding:.5rem 1rem;display:inline-block;border:1px solid rgba(251,191,36,.2)" id="v-codigo"></div>
+          <div style="font-size:.6rem;color:#555;margin-top:.75rem;letter-spacing:.08em">APRESENTE O CÓDIGO NA ENTRADA</div>
+        </div>
+        <button class="btn-save-voucher" onclick="screenshot()">📸 SALVAR INGRESSO</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+  async function loadVagas() {
+    try {
+      const r = await fetch('/api/vouchers.php?action=vagas');
+      const d = await r.json();
+      const totalDisp = d.exposicao.disponiveis + d.batalha.disponiveis;
+      document.getElementById('ev-vagas').innerHTML = `
+        <div class="ev-vaga"><div class="num">${totalDisp}</div><div class="lab">VAGAS RESTANTES</div></div>
+      `;
+      // Hide batalha toggle if full
+      if (d.batalha.disponiveis <= 0) {
+        const batBtn = document.getElementById('cat-batalha');
+        if (batBtn) batBtn.style.display = 'none';
+        // Force exposicao
+        document.getElementById('f-tipo').value = 'exposicao';
+      }
+    } catch(e) {}
+  }
+
+  function setCat(tipo) {
+    document.getElementById('f-tipo').value = tipo;
+    document.getElementById('cat-expo').classList.toggle('active', tipo === 'exposicao');
+    document.getElementById('cat-batalha').classList.toggle('active', tipo === 'batalha');
+  }
+
+  async function inscrever(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btn-sub');
+    const err = document.getElementById('ev-error');
+    err.style.display = 'none';
+    btn.disabled = true; btn.textContent = 'PROCESSANDO...';
+
+    const data = {
+      tipo: document.getElementById('f-tipo').value,
+      nome: document.getElementById('f-nome').value.trim(),
+      carro: document.getElementById('f-carro').value.trim(),
+      placa: document.getElementById('f-placa').value.trim(),
+      instagram: document.getElementById('f-ig').value.trim(),
+      telefone: document.getElementById('f-tel').value.trim()
+    };
+
+    try {
+      const r = await fetch('/api/vouchers.php', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+      const res = await r.json();
+      if (res.success) {
+        showVoucher(res.voucher);
+      } else {
+        err.textContent = res.error || 'Erro ao inscrever';
+        err.style.display = 'block';
+        btn.disabled = false; btn.textContent = 'GARANTIR MINHA VAGA';
+      }
+    } catch(ex) {
+      err.textContent = 'Erro de conexão';
+      err.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'GARANTIR MINHA VAGA';
+    }
+  }
+
+  function showVoucher(v) {
+    document.getElementById('form-wrap').style.display = 'none';
+    const card = document.getElementById('voucher-card');
+    card.classList.add('show');
+    document.getElementById('v-tipo').textContent = v.tipo === 'batalha' ? 'CARRO BATALHA DE RONCO' : 'CARRO EXPOSITOR';
+    document.getElementById('v-nome').textContent = v.nome;
+    document.getElementById('v-carro').textContent = v.carro + ' · ' + v.placa;
+    document.getElementById('v-codigo').textContent = v.codigo;
+  }
+
+  function screenshot() {
+    const tipo = document.getElementById('v-tipo').textContent;
+    const nome = document.getElementById('v-nome').textContent;
+    const carro = document.getElementById('v-carro').textContent;
+    const codigo = document.getElementById('v-codigo').textContent;
+
+    const c = document.createElement('canvas');
+    c.width = 600;
+    c.height = 280;
+    const cx = c.getContext('2d');
+
+    // Background
+    cx.fillStyle = '#0a0a0a';
+    cx.fillRect(0, 0, 600, 280);
+    cx.strokeStyle = '#fbbf24';
+    cx.lineWidth = 3;
+    cx.strokeRect(6, 6, 588, 268);
+
+    // Header
+    cx.fillStyle = '#fbbf24';
+    cx.font = 'bold 26px "Inter", sans-serif';
+    cx.fillText('VULTO CLUB', 30, 50);
+
+    cx.fillStyle = '#888';
+    cx.font = '11px "Inter", sans-serif';
+    cx.fillText('ENCONTRO AUTOMOTIVO · 22/08 · 18H', 30, 72);
+    cx.fillText('Av. Lauro de Gusmão Silveira — Guarulhos', 30, 88);
+
+    // Tipo badge
+    cx.fillStyle = tipo.includes('BATALHA') ? '#fbbf24' : '#60a5fa';
+    const badgeW = cx.measureText(tipo).width + 20;
+    cx.fillRect(30, 108, badgeW, 24);
+    cx.fillStyle = '#000';
+    cx.font = 'bold 11px "Inter", sans-serif';
+    cx.fillText(tipo, 40, 124);
+
+    // Nome e carro
+    cx.fillStyle = '#fff';
+    cx.font = 'bold 16px "Inter", sans-serif';
+    cx.fillText(nome, 30, 165);
+    cx.fillStyle = '#aaa';
+    cx.font = '13px "Inter", sans-serif';
+    cx.fillText(carro, 30, 185);
+
+    // Código
+    cx.fillStyle = '#fbbf24';
+    cx.font = 'bold 18px "JetBrains Mono", monospace';
+    cx.fillText(codigo, 30, 225);
+
+    // Regras
+    cx.fillStyle = '#444';
+    cx.font = '9px "Inter", sans-serif';
+    cx.fillText('Sem som alto · Sem corte de giro · Apresente o código na entrada', 30, 258);
+
+    // Download
+    const link = document.createElement('a');
+    link.download = 'ingresso-vulto-' + codigo + '.png';
+    link.href = c.toDataURL('image/png');
+    link.click();
+  }
+
+  loadVagas();
+  </script>
+</body>
+</html>
